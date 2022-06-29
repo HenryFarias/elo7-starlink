@@ -1,8 +1,8 @@
 package br.com.elo7.sonda.candidato.probe.service;
 
-import elo7.starlink.elo7starlinkprobe.dto.ProbeDTO;
-import elo7.starlink.elo7starlinkprobe.entity.Probe;
-import elo7.starlink.elo7starlinkprobe.repository.ProbeRepository;
+import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
+import br.com.elo7.sonda.candidato.probe.entity.Probe;
+import br.com.elo7.sonda.candidato.probe.repository.ProbeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

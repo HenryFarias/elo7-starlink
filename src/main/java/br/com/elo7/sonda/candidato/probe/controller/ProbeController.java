@@ -1,7 +1,7 @@
 package br.com.elo7.sonda.candidato.probe.controller;
 
-import elo7.starlink.elo7starlinkprobe.dto.ProbeDTO;
-import elo7.starlink.elo7starlinkprobe.service.ProbeService;
+import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
+import br.com.elo7.sonda.candidato.probe.service.ProbeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

@@ -1,8 +1,8 @@
 package br.com.elo7.sonda.candidato.planet.service;
 
-import elo7.starlink.elo7starlinkplanet.dto.PlanetDTO;
-import elo7.starlink.elo7starlinkplanet.entity.Planet;
-import elo7.starlink.elo7starlinkplanet.repository.PlanetRepository;
+import br.com.elo7.sonda.candidato.planet.dto.PlanetDTO;
+import br.com.elo7.sonda.candidato.planet.entity.Planet;
+import br.com.elo7.sonda.candidato.planet.repository.PlanetRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

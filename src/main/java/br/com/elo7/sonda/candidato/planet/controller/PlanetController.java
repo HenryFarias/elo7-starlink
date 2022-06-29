@@ -1,7 +1,7 @@
 package br.com.elo7.sonda.candidato.planet.controller;
 
-import elo7.starlink.elo7starlinkplanet.dto.PlanetDTO;
-import elo7.starlink.elo7starlinkplanet.service.PlanetService;
+import br.com.elo7.sonda.candidato.planet.dto.PlanetDTO;
+import br.com.elo7.sonda.candidato.planet.service.PlanetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
