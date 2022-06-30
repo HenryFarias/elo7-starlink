@@ -1,32 +1,30 @@
-package br.com.elo7.sonda.candidato.dto;
+package br.com.elo7.sonda.candidato.probe.dto;
 
-public class ProbeDTO {
-	private int x; 
-	private int y;
+public class CommandDTO {
+	private Long planetId;
 	private char direction;
 	private String commands;
 
-	public int getX() {
-		return x;
+	public Long getPlanetId() {
+		return planetId;
 	}
-	public void setX(int x) {
-		this.x = x;
+
+	public void setPlanetId(Long planetId) {
+		this.planetId = planetId;
 	}
-	public int getY() {
-		return y;
-	}
-	public void setY(int y) {
-		this.y = y;
-	}
+
 	public char getDirection() {
 		return direction;
 	}
+
 	public void setDirection(char direction) {
 		this.direction = direction;
 	}
+
 	public String getCommands() {
 		return commands;
 	}
+
 	public void setCommands(String commands) {
 		this.commands = commands;
 	}

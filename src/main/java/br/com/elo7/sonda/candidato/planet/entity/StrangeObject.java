@@ -1,13 +1,19 @@
-package br.com.elo7.sonda.candidato.probe.dto;
+package br.com.elo7.sonda.candidato.planet.entity;
 
-import br.com.elo7.sonda.candidato.probe.enumeration.Direction;
+import javax.persistence.*;
 
-public class ProbeDTO {
+@Entity
+public class StrangeObject {
+    @Id
+    @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;
-    private Direction direction;
-    private AreaDTO area;
+    @Column
+    private int x;
+    @Column
+    private int y;
 
     public Long getId() {
         return id;
@@ -33,19 +39,19 @@ public class ProbeDTO {
         this.description = description;
     }
 
-    public Direction getDirection() {
-        return direction;
+    public int getX() {
+        return x;
     }
 
-    public void setDirection(Direction direction) {
-        this.direction = direction;
+    public void setX(int x) {
+        this.x = x;
     }
 
-    public AreaDTO getArea() {
-        return area;
+    public int getY() {
+        return y;
     }
 
-    public void setArea(AreaDTO area) {
-        this.area = area;
+    public void setY(int y) {
+        this.y = y;
     }
 }

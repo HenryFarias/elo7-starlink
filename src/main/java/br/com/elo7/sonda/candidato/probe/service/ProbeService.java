@@ -1,8 +1,12 @@
 package br.com.elo7.sonda.candidato.probe.service;
 
+import br.com.elo7.sonda.candidato.planet.dto.ObjectDTO;
+import br.com.elo7.sonda.candidato.planet.service.PlanetService;
+import br.com.elo7.sonda.candidato.probe.dto.CommandDTO;
 import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
 import br.com.elo7.sonda.candidato.probe.entity.Probe;
 import br.com.elo7.sonda.candidato.probe.repository.ProbeRepository;
+import br.com.elo7.sonda.candidato.probe.service.movements.Movement;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +19,12 @@ public class ProbeService {
 
     @Autowired
     private ProbeRepository repository;
-
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private List<Movement> movements;
+    @Autowired
+    private PlanetService planetService;
 
     public void save(ProbeDTO probeDTO) {
         this.repository.save(modelMapper.map(probeDTO, Probe.class));
@@ -36,5 +43,24 @@ public class ProbeService {
                 .stream()
                 .map(probe -> modelMapper.map(probe, ProbeDTO.class))
                 .collect(Collectors.toList());
+    }
+
+    public void sendCommand(Long probeId, CommandDTO commandDTO) throws Exception {
+        ProbeDTO probe = find(probeId);
+        for (char command : commandDTO.getCommands().toCharArray()) {
+            probe = movements.stream()
+                    .filter(movement -> movement.findCommand().command == command)
+                    .findFirst()
+                    .orElseThrow(() -> new Exception("Movement not found"))
+                    .setProbe(probe)
+                    .moveTo()
+                    .getProbe();
+        }
+        save(probe);
+        planetService.receiveObject(toObjectDto(probe, commandDTO.getPlanetId()));
+    }
+
+    private ObjectDTO toObjectDto(ProbeDTO probeDTO, Long planetId) {
+        return new ObjectDTO(probeDTO, planetId);
     }
 }

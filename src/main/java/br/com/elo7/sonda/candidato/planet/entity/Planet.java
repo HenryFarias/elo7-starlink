@@ -11,13 +11,15 @@ public class Planet {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column
     @NotNull
     private String name;
-
     @Column
     private String description;
+    @Column
+    private int sizeX;
+    @Column
+    private int sizeY;
 
     public Long getId() {
         return id;
@@ -41,5 +43,21 @@ public class Planet {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getSizeX() {
+        return sizeX;
+    }
+
+    public void setSizeX(int sizeX) {
+        this.sizeX = sizeX;
+    }
+
+    public int getSizeY() {
+        return sizeY;
+    }
+
+    public void setSizeY(int sizeY) {
+        this.sizeY = sizeY;
     }
 }
