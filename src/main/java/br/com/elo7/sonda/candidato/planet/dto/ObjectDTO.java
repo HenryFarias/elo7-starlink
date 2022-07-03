@@ -1,30 +1,34 @@
 package br.com.elo7.sonda.candidato.planet.dto;
 
 import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ObjectDTO {
-    private Long objectId;
+    private Long id;
+    @JsonIgnore
     private Long planetId;
     private String name;
     private String description;
     private int x;
     private int y;
 
+    public ObjectDTO() {}
+
     public ObjectDTO(ProbeDTO probeDTO, Long planetId) {
-        this.objectId = probeDTO.getId();
+        this.id = probeDTO.getId();
         this.planetId = planetId;
         this.name = probeDTO.getName();
         this.description = probeDTO.getDescription();
-        this.x = probeDTO.getArea().getX();
-        this.y = probeDTO.getArea().getY();
+        this.x = probeDTO.getX();
+        this.y = probeDTO.getY();
     }
 
-    public Long getObjectId() {
-        return objectId;
+    public Long getId() {
+        return id;
     }
 
-    public void setObjectId(Long objectId) {
-        this.objectId = objectId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getPlanetId() {
