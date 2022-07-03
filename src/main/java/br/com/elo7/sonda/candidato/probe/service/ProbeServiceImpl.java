@@ -1,7 +1,7 @@
 package br.com.elo7.sonda.candidato.probe.service;
 
 import br.com.elo7.sonda.candidato.planet.dto.ObjectDTO;
-import br.com.elo7.sonda.candidato.planet.service.StrangeObjectService;
+import br.com.elo7.sonda.candidato.planet.service.ObjectService;
 import br.com.elo7.sonda.candidato.probe.dto.CommandDTO;
 import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
 import br.com.elo7.sonda.candidato.probe.entity.Probe;
@@ -24,7 +24,7 @@ public class ProbeServiceImpl implements ProbeService {
     @Autowired
     private List<Movement> movements;
     @Autowired
-    private StrangeObjectService objectService;
+    private ObjectService objectService;
 
     public void save(ProbeDTO probeDTO) {
         this.repository.save(modelMapper.map(probeDTO, Probe.class));

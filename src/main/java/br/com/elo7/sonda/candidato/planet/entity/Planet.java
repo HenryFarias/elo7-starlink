@@ -22,7 +22,7 @@ public class Planet {
     @Column
     private int height;
     @OneToMany(mappedBy = "planet")
-    private List<StrangeObject> objects;
+    private List<Object> objects;
 
     public Long getId() {
         return id;
@@ -64,11 +64,11 @@ public class Planet {
         this.height = sizeY;
     }
 
-    public List<StrangeObject> getObjects() {
+    public List<Object> getObjects() {
         return objects;
     }
 
-    public void setObjects(List<StrangeObject> objects) {
+    public void setObjects(List<Object> objects) {
         this.objects = objects;
     }
 }

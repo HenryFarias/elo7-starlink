@@ -3,7 +3,7 @@ package br.com.elo7.sonda.candidato.planet.entity;
 import javax.persistence.*;
 
 @Entity
-public class StrangeObject {
+public class Object {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,6 +14,9 @@ public class StrangeObject {
     private int x;
     @Column
     private int y;
+    @ManyToOne
+    @JoinColumn(name = "planet_id")
+    private Planet planet;
 
     public Long getId() {
         return id;
@@ -53,5 +56,13 @@ public class StrangeObject {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public Planet getPlanet() {
+        return planet;
+    }
+
+    public void setPlanet(Planet planet) {
+        this.planet = planet;
     }
 }
