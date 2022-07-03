@@ -9,8 +9,8 @@ public class Right extends Movement {
     public Command findCommand() {
         return Command.R;
     }
-    public Movement moveTo() {
-        Direction newDirection = switch (probe.getDirection()) {
+    public Movement moveTo(Direction direction) {
+        Direction newDirection = switch (direction) {
             case N -> Direction.E;
             case E -> Direction.S;
             case S -> Direction.W;

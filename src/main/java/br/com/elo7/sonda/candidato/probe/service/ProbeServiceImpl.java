@@ -1,7 +1,7 @@
 package br.com.elo7.sonda.candidato.probe.service;
 
 import br.com.elo7.sonda.candidato.planet.dto.ObjectDTO;
-import br.com.elo7.sonda.candidato.planet.service.PlanetService;
+import br.com.elo7.sonda.candidato.planet.service.StrangeObjectService;
 import br.com.elo7.sonda.candidato.probe.dto.CommandDTO;
 import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
 import br.com.elo7.sonda.candidato.probe.entity.Probe;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class ProbeService {
+public class ProbeServiceImpl implements ProbeService {
 
     @Autowired
     private ProbeRepository repository;
@@ -24,7 +24,7 @@ public class ProbeService {
     @Autowired
     private List<Movement> movements;
     @Autowired
-    private PlanetService planetService;
+    private StrangeObjectService objectService;
 
     public void save(ProbeDTO probeDTO) {
         this.repository.save(modelMapper.map(probeDTO, Probe.class));
@@ -51,13 +51,13 @@ public class ProbeService {
             probe = movements.stream()
                     .filter(movement -> movement.findCommand().command == command)
                     .findFirst()
-                    .orElseThrow(() -> new Exception("Movement not found"))
+                    .orElseThrow(() -> new Exception("Command not recognized"))
                     .setProbe(probe)
-                    .moveTo()
+                    .moveTo(commandDTO.getDirection())
                     .getProbe();
         }
         save(probe);
-        planetService.receiveObject(toObjectDto(probe, commandDTO.getPlanetId()));
+        objectService.receiveObject(toObjectDto(probe, commandDTO.getPlanetId()));
     }
 
     private ObjectDTO toObjectDto(ProbeDTO probeDTO, Long planetId) {
