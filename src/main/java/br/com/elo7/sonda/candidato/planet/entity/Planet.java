@@ -3,6 +3,7 @@ package br.com.elo7.sonda.candidato.planet.entity;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Planet {
@@ -17,9 +18,11 @@ public class Planet {
     @Column
     private String description;
     @Column
-    private int sizeX;
+    private int width;
     @Column
-    private int sizeY;
+    private int height;
+    @OneToMany(mappedBy = "planet")
+    private List<StrangeObject> objects;
 
     public Long getId() {
         return id;
@@ -45,19 +48,27 @@ public class Planet {
         this.description = description;
     }
 
-    public int getSizeX() {
-        return sizeX;
+    public int getWidth() {
+        return width;
     }
 
-    public void setSizeX(int sizeX) {
-        this.sizeX = sizeX;
+    public void setWidth(int sizeX) {
+        this.width = sizeX;
     }
 
-    public int getSizeY() {
-        return sizeY;
+    public int getHeight() {
+        return height;
     }
 
-    public void setSizeY(int sizeY) {
-        this.sizeY = sizeY;
+    public void setHeight(int sizeY) {
+        this.height = sizeY;
+    }
+
+    public List<StrangeObject> getObjects() {
+        return objects;
+    }
+
+    public void setObjects(List<StrangeObject> objects) {
+        this.objects = objects;
     }
 }

@@ -7,7 +7,8 @@ public class ProbeDTO {
     private String name;
     private String description;
     private Direction direction;
-    private AreaDTO area;
+    private int x;
+    private int y;
 
     public Long getId() {
         return id;
@@ -41,11 +42,19 @@ public class ProbeDTO {
         this.direction = direction;
     }
 
-    public AreaDTO getArea() {
-        return area;
+    public int getX() {
+        return x;
     }
 
-    public void setArea(AreaDTO area) {
-        this.area = area;
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
     }
 }
