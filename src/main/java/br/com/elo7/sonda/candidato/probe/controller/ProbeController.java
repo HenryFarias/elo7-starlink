@@ -19,24 +19,24 @@ public class ProbeController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody ProbeDTO request) {
-        this.service.save(request);
+        service.save(request);
     }
 
     @PostMapping("/{id}/command")
     @ResponseStatus(HttpStatus.OK)
-    public void sendToPlanet(@PathVariable Long id, @RequestBody CommandDTO request) throws Exception {
-        this.service.sendCommand(id, request);
+    public void sendCommand(@PathVariable Long id, @RequestBody CommandDTO request) throws Exception {
+        service.sendCommand(id, request);
     }
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ProbeDTO find(@PathVariable Long id) throws Exception {
-        return this.service.find(id);
+        return service.find(id);
     }
 
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public List<ProbeDTO> findAll() {
-        return this.service.findAll();
+        return service.findAll();
     }
 }

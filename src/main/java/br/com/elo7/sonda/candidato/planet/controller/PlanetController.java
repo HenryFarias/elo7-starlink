@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/")
+@RequestMapping(path = "/planet")
 public class PlanetController {
 
     @Autowired
@@ -18,18 +18,18 @@ public class PlanetController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@RequestBody PlanetDTO request) {
-        this.service.save(request);
+        service.save(request);
     }
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public PlanetDTO find(@PathVariable Long id) throws Exception {
-        return this.service.find(id);
+        return service.find(id);
     }
 
     @GetMapping(produces = "application/json")
     @ResponseStatus(HttpStatus.OK)
     public List<PlanetDTO> findAll() {
-        return this.service.findAll();
+        return service.findAll();
     }
 }
