@@ -1,8 +1,10 @@
 package br.com.elo7.sonda.candidato.probe.dto;
 
+import br.com.elo7.sonda.candidato.probe.enumeration.Direction;
+
 public class CommandDTO {
 	private Long planetId;
-	private char direction;
+	private Direction direction;
 	private String commands;
 
 	public Long getPlanetId() {
@@ -13,11 +15,11 @@ public class CommandDTO {
 		this.planetId = planetId;
 	}
 
-	public char getDirection() {
+	public Direction getDirection() {
 		return direction;
 	}
 
-	public void setDirection(char direction) {
+	public void setDirection(Direction direction) {
 		this.direction = direction;
 	}
 
