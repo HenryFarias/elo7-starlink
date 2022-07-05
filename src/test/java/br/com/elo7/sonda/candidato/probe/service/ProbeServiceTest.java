@@ -83,7 +83,7 @@ public class ProbeServiceTest {
 	}
 
 	@Test
-	public void should_find_probe_but_probe_dont_exists_error() {
+	public void should_find_probe_dont_exists_error() {
 		Exception appException = assertThrows(Exception.class, () ->
 				service.find(generator.nextLong())
 		);
