@@ -1,5 +1,6 @@
 package br.com.elo7.sonda.candidato.probe.entity;
 
+import br.com.elo7.sonda.candidato.probe.enumeration.Direction;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -19,8 +20,14 @@ public class Probe {
     @Column
     private String description;
 
+    @Column
     private int x;
+
+    @Column
     private int y;
+
+    @Column
+    private Direction direction;
 
     public Long getId() {
         return id;
@@ -60,5 +67,13 @@ public class Probe {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction direction) {
+        this.direction = direction;
     }
 }
