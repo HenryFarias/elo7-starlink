@@ -5,7 +5,6 @@ import br.com.elo7.sonda.candidato.planet.service.ObjectService;
 import br.com.elo7.sonda.candidato.probe.dto.CommandDTO;
 import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
 import br.com.elo7.sonda.candidato.probe.entity.Probe;
-import br.com.elo7.sonda.candidato.probe.enumeration.Direction;
 import br.com.elo7.sonda.candidato.probe.repository.ProbeRepository;
 import br.com.elo7.sonda.candidato.probe.service.movements.Movement;
 import org.modelmapper.ModelMapper;
@@ -18,14 +17,19 @@ import java.util.stream.Collectors;
 @Service
 public class ProbeServiceImpl implements ProbeService {
 
+    private final ProbeRepository repository;
+    private final ModelMapper modelMapper;
+    private final List<Movement> movements;
+    private final ObjectService objectService;
+
     @Autowired
-    private ProbeRepository repository;
-    @Autowired
-    private ModelMapper modelMapper;
-    @Autowired
-    private List<Movement> movements;
-    @Autowired
-    private ObjectService objectService;
+    public ProbeServiceImpl(ProbeRepository repository, ModelMapper modelMapper, List<Movement> movements,
+                            ObjectService objectService) {
+        this.repository = repository;
+        this.modelMapper = modelMapper;
+        this.movements = movements;
+        this.objectService = objectService;
+    }
 
     public void save(ProbeDTO probeDTO) {
         this.repository.save(modelMapper.map(probeDTO, Probe.class));
@@ -48,19 +52,20 @@ public class ProbeServiceImpl implements ProbeService {
 
     public void sendCommand(Long probeId, CommandDTO commandDTO) throws Exception {
         ProbeDTO probe = find(probeId);
-        moveProbe(probe, commandDTO.getCommands(), commandDTO.getDirection());
+        probe.setDirection(commandDTO.getDirection());
+        moveProbe(probe, commandDTO.getCommands());
         save(probe);
         objectService.receiveObject(new ObjectDTO(probe, commandDTO.getPlanetId()));
     }
 
-    private void moveProbe(ProbeDTO probe, String commands, Direction direction) throws Exception {
+    public void moveProbe(ProbeDTO probe, String commands) throws Exception {
         for (char command : commands.toCharArray()) {
             probe = movements.stream()
                     .filter(movement -> movement.findCommand().command == command)
                     .findFirst()
                     .orElseThrow(() -> new Exception("Command not recognized"))
                     .setProbe(probe)
-                    .moveTo(direction)
+                    .moveTo()
                     .getProbe();
         }
     }

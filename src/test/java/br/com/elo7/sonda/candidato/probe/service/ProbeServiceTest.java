@@ -1,12 +1,18 @@
 package br.com.elo7.sonda.candidato.probe.service;
 
+import br.com.elo7.sonda.candidato.planet.service.ObjectService;
+import br.com.elo7.sonda.candidato.probe.dto.CommandDTO;
 import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
 import br.com.elo7.sonda.candidato.probe.entity.Probe;
 import br.com.elo7.sonda.candidato.probe.repository.ProbeRepository;
+import br.com.elo7.sonda.candidato.probe.service.movements.Forward;
+import br.com.elo7.sonda.candidato.probe.service.movements.Left;
+import br.com.elo7.sonda.candidato.probe.service.movements.Movement;
+import br.com.elo7.sonda.candidato.probe.service.movements.Right;
 import org.jeasy.random.EasyRandom;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -16,6 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static br.com.elo7.sonda.candidato.probe.enumeration.Direction.E;
+import static br.com.elo7.sonda.candidato.probe.enumeration.Direction.N;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,16 +37,24 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class ProbeServiceTest {
 
-	@InjectMocks
-	private ProbeService service = new ProbeServiceImpl();
+	private ProbeService service;
 
 	@Mock
 	private ProbeRepository repository;
+
+	@Mock
+	private ObjectService objectService;
 
 	@Spy
 	private ModelMapper modelMapper;
 
 	private final EasyRandom generator = new EasyRandom();
+
+	@BeforeEach
+	public void setup() {
+		List<Movement> movements = Arrays.asList(new Right(), new Left(), new Forward());
+		service = new ProbeServiceImpl(repository, modelMapper, movements, objectService);
+	}
 	
 	@Test
 	public void should_save_probe_success() {
@@ -93,12 +109,58 @@ public class ProbeServiceTest {
 	}
 
 	@Test
-	public void should_send_command_success() {
-		// todo:
+	public void should_send_command_success() throws Exception {
+		Probe expectedProbe = generator.nextObject(Probe.class);
+		Long expectedProbeId = generator.nextLong();
+		Long expectedPlanetId = generator.nextLong();
+
+		when(repository.findById(expectedProbeId))
+				.thenReturn(Optional.of(expectedProbe));
+
+		CommandDTO command = generator.nextObject(CommandDTO.class);
+		command.setCommands("LMLMLMLMM");
+
+		service.sendCommand(expectedProbeId, command);
+
+		verify(repository, times(1)).findById(any());
+		verify(repository, times(1)).save(any());
+		verify(objectService).receiveObject(argThat(object -> {
+			assertThat(object).isNotNull();
+			assertEquals(expectedPlanetId, object.getPlanetId());
+			assertEquals(expectedProbeId, object.getId());
+			assertEquals(expectedProbe.getName(), object.getName());
+			assertEquals(expectedProbe.getDescription(), object.getDescription());
+			return true;
+		}));
 	}
 
 	@Test
-	public void should_move_probe_success() {
-		// todo:
+	public void should_move_probe_success() throws Exception {
+		String commands = "LMLMLMLMM";
+		ProbeDTO probe = generator.nextObject(ProbeDTO.class);
+		probe.setY(2);
+		probe.setX(1);
+		probe.setDirection(N);
+
+		service.moveProbe(probe, commands);
+
+		assertEquals(N, probe.getDirection());
+		assertEquals(1, probe.getX());
+		assertEquals(3, probe.getY());
+	}
+
+	@Test
+	public void should_move_probe_2_success() throws Exception {
+		String commands = "MMRMMRMRRML";
+		ProbeDTO probe = generator.nextObject(ProbeDTO.class);
+		probe.setY(3);
+		probe.setX(3);
+		probe.setDirection(E);
+
+		service.moveProbe(probe, commands);
+
+		assertEquals(N, probe.getDirection());
+		assertEquals(5, probe.getX());
+		assertEquals(1, probe.getY());
 	}
 }

@@ -10,4 +10,5 @@ public interface ProbeService {
     ProbeDTO find(Long id) throws Exception;
     void save(ProbeDTO planetDTO);
     void sendCommand(Long probeId, CommandDTO commandDTO) throws Exception;
+    void moveProbe(ProbeDTO probe, String commands) throws Exception;
 }

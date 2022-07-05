@@ -11,8 +11,8 @@ public class Left extends Movement {
         return Command.L;
     }
 
-    public Movement moveTo(Direction direction) {
-        Direction newDirection = switch (direction) {
+    public Movement moveTo() {
+        Direction newDirection = switch (probe.getDirection()) {
             case N -> Direction.W;
             case W -> Direction.S;
             case S -> Direction.E;

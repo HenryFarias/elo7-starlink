@@ -16,11 +16,12 @@ public class ForwardTest {
     @Test
     public void should_move_probe_to_west_with_forward_command_success() {
         var probe = generator.nextObject(ProbeDTO.class);
+        probe.setDirection(W);
         probe.setX(2);
         probe.setY(2);
         probe = new Forward()
                 .setProbe(probe)
-                .moveTo(W)
+                .moveTo()
                 .getProbe();
         assertEquals(1, probe.getX());
         assertEquals(2, probe.getY());
@@ -29,11 +30,12 @@ public class ForwardTest {
     @Test
     public void should_move_probe_to_north_with_forward_command_success() {
         var probe = generator.nextObject(ProbeDTO.class);
+        probe.setDirection(N);
         probe.setX(2);
         probe.setY(2);
         probe = new Forward()
                 .setProbe(probe)
-                .moveTo(N)
+                .moveTo()
                 .getProbe();
         assertEquals(2, probe.getX());
         assertEquals(3, probe.getY());
@@ -42,11 +44,12 @@ public class ForwardTest {
     @Test
     public void should_move_probe_to_east_with_forward_command_success() {
         var probe = generator.nextObject(ProbeDTO.class);
+        probe.setDirection(E);
         probe.setX(2);
         probe.setY(2);
         probe = new Forward()
                 .setProbe(probe)
-                .moveTo(E)
+                .moveTo()
                 .getProbe();
         assertEquals(3, probe.getX());
         assertEquals(2, probe.getY());
@@ -55,11 +58,12 @@ public class ForwardTest {
     @Test
     public void should_move_probe_to_south_with_forward_command_success() {
         var probe = generator.nextObject(ProbeDTO.class);
+        probe.setDirection(S);
         probe.setX(2);
         probe.setY(2);
         probe = new Forward()
                 .setProbe(probe)
-                .moveTo(S)
+                .moveTo()
                 .getProbe();
         assertEquals(2, probe.getX());
         assertEquals(1, probe.getY());

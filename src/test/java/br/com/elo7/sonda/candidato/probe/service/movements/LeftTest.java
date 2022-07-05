@@ -16,9 +16,10 @@ public class LeftTest {
     @Test
     public void should_move_probe_to_west_with_left_command_success() {
         var probe = generator.nextObject(ProbeDTO.class);
+        probe.setDirection(W);
         probe = new Left()
                 .setProbe(probe)
-                .moveTo(W)
+                .moveTo()
                 .getProbe();
         assertEquals(S, probe.getDirection());
     }
@@ -26,9 +27,10 @@ public class LeftTest {
     @Test
     public void should_move_probe_to_north_with_left_command_success() {
         var probe = generator.nextObject(ProbeDTO.class);
+        probe.setDirection(N);
         probe = new Left()
                 .setProbe(probe)
-                .moveTo(N)
+                .moveTo()
                 .getProbe();
         assertEquals(W, probe.getDirection());
     }
@@ -36,9 +38,10 @@ public class LeftTest {
     @Test
     public void should_move_probe_to_east_with_left_command_success() {
         var probe = generator.nextObject(ProbeDTO.class);
+        probe.setDirection(E);
         probe = new Left()
                 .setProbe(probe)
-                .moveTo(E)
+                .moveTo()
                 .getProbe();
         assertEquals(N, probe.getDirection());
     }
@@ -46,9 +49,10 @@ public class LeftTest {
     @Test
     public void should_move_probe_to_south_with_left_command_success() {
         var probe = generator.nextObject(ProbeDTO.class);
+        probe.setDirection(S);
         probe = new Left()
                 .setProbe(probe)
-                .moveTo(S)
+                .moveTo()
                 .getProbe();
         assertEquals(E, probe.getDirection());
     }
