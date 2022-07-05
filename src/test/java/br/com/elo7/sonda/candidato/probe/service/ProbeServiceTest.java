@@ -56,7 +56,6 @@ public class ProbeServiceTest {
 		Probe expectedProbe = generator.nextObject(Probe.class);
 		Long probeId = generator.nextLong();
 		expectedProbe.setId(probeId);
-
 		when(repository.findById(probeId))
 				.thenReturn(Optional.of(expectedProbe));
 
@@ -95,6 +94,11 @@ public class ProbeServiceTest {
 
 	@Test
 	public void should_send_command_success() {
+		// todo:
+	}
+
+	@Test
+	public void should_move_probe_success() {
 		// todo:
 	}
 }

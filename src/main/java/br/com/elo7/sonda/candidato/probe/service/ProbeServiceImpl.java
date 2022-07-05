@@ -5,6 +5,7 @@ import br.com.elo7.sonda.candidato.planet.service.ObjectService;
 import br.com.elo7.sonda.candidato.probe.dto.CommandDTO;
 import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
 import br.com.elo7.sonda.candidato.probe.entity.Probe;
+import br.com.elo7.sonda.candidato.probe.enumeration.Direction;
 import br.com.elo7.sonda.candidato.probe.repository.ProbeRepository;
 import br.com.elo7.sonda.candidato.probe.service.movements.Movement;
 import org.modelmapper.ModelMapper;
@@ -47,20 +48,20 @@ public class ProbeServiceImpl implements ProbeService {
 
     public void sendCommand(Long probeId, CommandDTO commandDTO) throws Exception {
         ProbeDTO probe = find(probeId);
-        for (char command : commandDTO.getCommands().toCharArray()) {
+        moveProbe(probe, commandDTO.getCommands(), commandDTO.getDirection());
+        save(probe);
+        objectService.receiveObject(new ObjectDTO(probe, commandDTO.getPlanetId()));
+    }
+
+    private void moveProbe(ProbeDTO probe, String commands, Direction direction) throws Exception {
+        for (char command : commands.toCharArray()) {
             probe = movements.stream()
                     .filter(movement -> movement.findCommand().command == command)
                     .findFirst()
                     .orElseThrow(() -> new Exception("Command not recognized"))
                     .setProbe(probe)
-                    .moveTo(commandDTO.getDirection())
+                    .moveTo(direction)
                     .getProbe();
         }
-        save(probe);
-        objectService.receiveObject(toObjectDto(probe, commandDTO.getPlanetId()));
-    }
-
-    private ObjectDTO toObjectDto(ProbeDTO probeDTO, Long planetId) {
-        return new ObjectDTO(probeDTO, planetId);
     }
 }
