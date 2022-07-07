@@ -3,12 +3,11 @@ package br.com.elo7.sonda.candidato.planet.service;
 import br.com.elo7.sonda.candidato.planet.dto.ObjectDTO;
 import br.com.elo7.sonda.candidato.planet.dto.PlanetDTO;
 import br.com.elo7.sonda.candidato.planet.entity.Object;
+import br.com.elo7.sonda.candidato.planet.entity.Planet;
 import br.com.elo7.sonda.candidato.planet.repository.ObjectRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class ObjectServiceImpl implements ObjectService {
@@ -23,26 +22,25 @@ public class ObjectServiceImpl implements ObjectService {
     private ModelMapper modelMapper;
 
     public void receiveObject(ObjectDTO objectDTO) throws Exception {
-        // validar se o objeto está fora do planeta
-        // validar se já existe um objeto nessa área
-//        StrangeObject object = repository.findById(objectDTO.getId())
-//                .orElseGet(() -> repository.save(modelMapper.map(objectDTO, StrangeObject.class)));
-        PlanetDTO planet = planetService.find(objectDTO.getPlanetId());
-        Object object = repository.findById(objectDTO.getId())
-                .orElse(null);
-        if (object == null) {
-            repository.save(modelMapper.map(objectDTO, Object.class));
-        } else {
-            if (existsInPlanet(planet, object)) {
-                throw new Exception("Could not find this object on this planet");
-            }
-            object.setX(objectDTO.getX());
-            object.setY(objectDTO.getY());
-            repository.save(object);
-        }
+        PlanetDTO planet = planetService.find(objectDTO.getPlanetId())
+                .coordinatesIsInsidePlanet(objectDTO.getX(), objectDTO.getY())
+                .thereIsNoObjectAtCoordinates(objectDTO.getX(), objectDTO.getY());
+        repository.findByIdAndPlanet_Id(objectDTO.getId(), planet.getId())
+            .ifPresentOrElse(
+                (object -> updateCoordinates(object, objectDTO.getX(), objectDTO.getY())),
+                () -> save(objectDTO, planet)
+            );
     }
 
-    private boolean existsInPlanet(PlanetDTO planet, Object object) {
-        return !Objects.equals(planet.getId(), object.getPlanet().getId());
+    private void save(ObjectDTO objectDTO, PlanetDTO planet) {
+        var object = modelMapper.map(objectDTO, Object.class);
+        object.setPlanet(modelMapper.map(planet, Planet.class));
+        repository.save(object);
+    }
+
+    public void updateCoordinates(Object object, int x, int y) {
+        object.setX(x);
+        object.setY(y);
+        repository.save(object);
     }
 }

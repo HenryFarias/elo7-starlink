@@ -10,6 +10,26 @@ public class PlanetDTO {
     private Integer height;
     private List<ObjectDTO> objects;
 
+    public PlanetDTO coordinatesIsInsidePlanet(int x, int y) throws Exception {
+        var invalid = x > this.getWidth() ||
+                x < 0 ||
+                y > this.getHeight() ||
+                y < 0;
+        if (invalid) {
+            throw new Exception("Object is off planet");
+        }
+        return this;
+    }
+
+    public PlanetDTO thereIsNoObjectAtCoordinates(int x, int y) throws Exception {
+        for (ObjectDTO object : this.getObjects()) {
+            if (y == object.getY() && x == object.getX()) {
+                throw new Exception("There is already an object in this area");
+            }
+        }
+        return this;
+    }
+
     public Long getId() {
         return id;
     }
