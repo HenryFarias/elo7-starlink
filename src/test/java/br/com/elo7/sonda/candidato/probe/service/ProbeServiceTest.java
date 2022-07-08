@@ -1,6 +1,7 @@
 package br.com.elo7.sonda.candidato.probe.service;
 
 import br.com.elo7.sonda.candidato.planet.service.ObjectService;
+import br.com.elo7.sonda.candidato.probe.dto.AreaDTO;
 import br.com.elo7.sonda.candidato.probe.dto.CommandDTO;
 import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
 import br.com.elo7.sonda.candidato.probe.entity.Probe;
@@ -162,5 +163,41 @@ public class ProbeServiceTest {
 		assertEquals(N, probe.getDirection());
 		assertEquals(5, probe.getX());
 		assertEquals(1, probe.getY());
+	}
+
+	@Test
+	public void should_send_to_planet_success() throws Exception {
+		var expectedProbe = generator.nextObject(Probe.class);
+		var area = generator.nextObject(AreaDTO.class);
+		var expectedProbeId = generator.nextLong();
+		var expectedPlanetId = generator.nextLong();
+
+		area.setX(2);
+		area.setY(2);
+		area.setPlanetId(expectedPlanetId);
+
+		when(repository.findById(expectedProbeId))
+				.thenReturn(Optional.of(expectedProbe));
+
+		service.sendToPlanet(expectedProbeId, area);
+
+		verify(repository, times(1)).findById(any());
+		verify(repository, times(1)).save(any());
+		verify(repository).save(argThat(probe -> {
+			assertThat(probe).isNotNull();
+			assertEquals(area.getX(), probe.getX());
+			assertEquals(area.getY(), probe.getY());
+			return true;
+		}));
+		verify(objectService).receiveObject(argThat(object -> {
+			assertThat(object).isNotNull();
+			assertEquals(expectedPlanetId, object.getPlanetId());
+			assertEquals(expectedProbeId, object.getId());
+			assertEquals(expectedProbe.getName(), object.getName());
+			assertEquals(expectedProbe.getDescription(), object.getDescription());
+			assertEquals(area.getX(), object.getX());
+			assertEquals(area.getY(), object.getY());
+			return true;
+		}));
 	}
 }

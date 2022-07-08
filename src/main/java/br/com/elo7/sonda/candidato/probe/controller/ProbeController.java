@@ -1,5 +1,6 @@
 package br.com.elo7.sonda.candidato.probe.controller;
 
+import br.com.elo7.sonda.candidato.probe.dto.AreaDTO;
 import br.com.elo7.sonda.candidato.probe.dto.CommandDTO;
 import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
 import br.com.elo7.sonda.candidato.probe.service.ProbeService;
@@ -26,6 +27,12 @@ public class ProbeController {
     @ResponseStatus(HttpStatus.OK)
     public void sendCommand(@PathVariable Long id, @RequestBody CommandDTO request) throws Exception {
         service.sendCommand(id, request);
+    }
+
+    @PostMapping("/{id}/send")
+    @ResponseStatus(HttpStatus.OK)
+    public void sendToPlanet(@PathVariable Long id, @RequestBody AreaDTO request) throws Exception {
+        service.sendToPlanet(id, request);
     }
 
     @GetMapping(value = "/{id}")

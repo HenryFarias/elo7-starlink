@@ -2,6 +2,7 @@ package br.com.elo7.sonda.candidato.probe.service;
 
 import br.com.elo7.sonda.candidato.planet.dto.ObjectDTO;
 import br.com.elo7.sonda.candidato.planet.service.ObjectService;
+import br.com.elo7.sonda.candidato.probe.dto.AreaDTO;
 import br.com.elo7.sonda.candidato.probe.dto.CommandDTO;
 import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
 import br.com.elo7.sonda.candidato.probe.entity.Probe;
@@ -56,6 +57,14 @@ public class ProbeServiceImpl implements ProbeService {
         moveProbe(probe, commandDTO.getCommands());
         save(probe);
         objectService.receiveObject(new ObjectDTO(probe, commandDTO.getPlanetId()));
+    }
+
+    public void sendToPlanet(Long probeId, AreaDTO area) throws Exception {
+        ProbeDTO probe = find(probeId);
+        probe.setX(area.getX());
+        probe.setY(area.getY());
+        save(probe);
+        objectService.receiveObject(new ObjectDTO(probe, area.getPlanetId()));
     }
 
     public void moveProbe(ProbeDTO probe, String commands) throws Exception {
