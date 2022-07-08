@@ -1,5 +1,6 @@
 package br.com.elo7.sonda.candidato.planet.dto;
 
+import br.com.elo7.sonda.candidato.exception.ApplicationException;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +16,7 @@ public class PlanetDtoTest {
         var planet = generator.nextObject(PlanetDTO.class);
         planet.setWidth(5);
         planet.setHeight(5);
-        Exception appException = assertThrows(Exception.class, () ->
+        ApplicationException appException = assertThrows(ApplicationException.class, () ->
             planet.coordinatesIsInsidePlanet(7, 0)
         );
         assertEquals("Object is off planet", appException.getMessage());
@@ -26,7 +27,7 @@ public class PlanetDtoTest {
         var planet = generator.nextObject(PlanetDTO.class);
         planet.setWidth(5);
         planet.setHeight(5);
-        Exception appException = assertThrows(Exception.class, () ->
+        ApplicationException appException = assertThrows(ApplicationException.class, () ->
                 planet.coordinatesIsInsidePlanet(0, 7)
         );
         assertEquals("Object is off planet", appException.getMessage());
@@ -37,7 +38,7 @@ public class PlanetDtoTest {
         var planet = generator.nextObject(PlanetDTO.class);
         planet.setWidth(5);
         planet.setHeight(5);
-        Exception appException = assertThrows(Exception.class, () ->
+        ApplicationException appException = assertThrows(ApplicationException.class, () ->
                 planet.coordinatesIsInsidePlanet(7, 7)
         );
         assertEquals("Object is off planet", appException.getMessage());
@@ -48,7 +49,7 @@ public class PlanetDtoTest {
         var planet = generator.nextObject(PlanetDTO.class);
         planet.setWidth(5);
         planet.setHeight(5);
-        Exception appException = assertThrows(Exception.class, () ->
+        ApplicationException appException = assertThrows(ApplicationException.class, () ->
                 planet.coordinatesIsInsidePlanet(-7, 0)
         );
         assertEquals("Object is off planet", appException.getMessage());
@@ -59,7 +60,7 @@ public class PlanetDtoTest {
         var planet = generator.nextObject(PlanetDTO.class);
         planet.setWidth(5);
         planet.setHeight(5);
-        Exception appException = assertThrows(Exception.class, () ->
+        ApplicationException appException = assertThrows(ApplicationException.class, () ->
                 planet.coordinatesIsInsidePlanet(0, -7)
         );
         assertEquals("Object is off planet", appException.getMessage());
@@ -70,8 +71,8 @@ public class PlanetDtoTest {
         var planet = generator.nextObject(PlanetDTO.class);
         planet.setWidth(5);
         planet.setHeight(5);
-        Exception appException = assertThrows(Exception.class, () ->
-                planet.coordinatesIsInsidePlanet(-7, -7)
+        ApplicationException appException = assertThrows(ApplicationException.class, () ->
+            planet.coordinatesIsInsidePlanet(-7, -7)
         );
         assertEquals("Object is off planet", appException.getMessage());
     }
@@ -83,7 +84,7 @@ public class PlanetDtoTest {
         planet.setHeight(5);
         planet.getObjects().get(0).setX(2);
         planet.getObjects().get(0).setY(2);
-        Exception appException = assertThrows(Exception.class, () ->
+        ApplicationException appException = assertThrows(ApplicationException.class, () ->
             planet.thereIsNoObjectAtCoordinates(2, 2)
         );
         assertEquals("There is already an object in this area", appException.getMessage());

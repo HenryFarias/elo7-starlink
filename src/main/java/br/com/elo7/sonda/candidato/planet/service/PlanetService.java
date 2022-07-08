@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface PlanetService {
     List<PlanetDTO> findAll();
-    PlanetDTO find(Long id) throws Exception;
+    PlanetDTO find(Long id);
     void save(PlanetDTO planetDTO);
 }

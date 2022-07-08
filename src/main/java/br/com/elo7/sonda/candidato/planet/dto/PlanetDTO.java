@@ -1,5 +1,7 @@
 package br.com.elo7.sonda.candidato.planet.dto;
 
+import br.com.elo7.sonda.candidato.exception.ApplicationException;
+
 import java.util.List;
 
 public class PlanetDTO {
@@ -10,21 +12,21 @@ public class PlanetDTO {
     private Integer height;
     private List<ObjectDTO> objects;
 
-    public PlanetDTO coordinatesIsInsidePlanet(int x, int y) throws Exception {
+    public PlanetDTO coordinatesIsInsidePlanet(int x, int y) {
         var invalid = x > this.getWidth() ||
                 x < 0 ||
                 y > this.getHeight() ||
                 y < 0;
         if (invalid) {
-            throw new Exception("Object is off planet");
+            throw new ApplicationException("Object is off planet");
         }
         return this;
     }
 
-    public PlanetDTO thereIsNoObjectAtCoordinates(int x, int y) throws Exception {
+    public PlanetDTO thereIsNoObjectAtCoordinates(int x, int y) {
         for (ObjectDTO object : this.getObjects()) {
             if (y == object.getY() && x == object.getX()) {
-                throw new Exception("There is already an object in this area");
+                throw new ApplicationException("There is already an object in this area");
             }
         }
         return this;

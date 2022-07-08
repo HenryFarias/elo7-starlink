@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface ProbeService {
     List<ProbeDTO> findAll();
-    ProbeDTO find(Long id) throws Exception;
+    ProbeDTO find(Long id);
     void save(ProbeDTO planetDTO);
-    void sendCommand(Long probeId, CommandDTO commandDTO) throws Exception;
-    void moveProbe(ProbeDTO probe, String commands) throws Exception;
-    void sendToPlanet(Long probeId, AreaDTO area) throws Exception;
+    void sendCommand(Long probeId, CommandDTO commandDTO);
+    void moveProbe(ProbeDTO probe, String commands);
+    void sendToPlanet(Long probeId, AreaDTO area);
 }

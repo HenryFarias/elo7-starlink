@@ -21,7 +21,7 @@ public class ObjectServiceImpl implements ObjectService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public void receiveObject(ObjectDTO objectDTO) throws Exception {
+    public void receiveObject(ObjectDTO objectDTO) {
         PlanetDTO planet = planetService.find(objectDTO.getPlanetId())
                 .coordinatesIsInsidePlanet(objectDTO.getX(), objectDTO.getY())
                 .thereIsNoObjectAtCoordinates(objectDTO.getX(), objectDTO.getY());

@@ -1,5 +1,6 @@
 package br.com.elo7.sonda.candidato.planet.service;
 
+import br.com.elo7.sonda.candidato.exception.ApplicationException;
 import br.com.elo7.sonda.candidato.planet.dto.PlanetDTO;
 import br.com.elo7.sonda.candidato.planet.entity.Planet;
 import br.com.elo7.sonda.candidato.planet.repository.PlanetRepository;
@@ -51,7 +52,7 @@ public class PlanetServiceTest {
 	}
 
 	@Test
-	public void should_find_planet_success() throws Exception {
+	public void should_find_planet_success() {
 		Planet expectedPlanet = generator.nextObject(Planet.class);
 		Long planetId = generator.nextLong();
 		expectedPlanet.setId(planetId);
@@ -72,8 +73,8 @@ public class PlanetServiceTest {
 
 	@Test
 	public void should_find_planet_dont_exists_error() {
-		Exception appException = assertThrows(Exception.class, () ->
-				service.find(generator.nextLong())
+		ApplicationException appException = assertThrows(ApplicationException.class, () ->
+			service.find(generator.nextLong())
 		);
 		assertEquals("Planet not found", appException.getMessage());
 	}

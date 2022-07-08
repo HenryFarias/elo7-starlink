@@ -1,5 +1,6 @@
 package br.com.elo7.sonda.candidato.probe.service;
 
+import br.com.elo7.sonda.candidato.exception.ApplicationException;
 import br.com.elo7.sonda.candidato.planet.service.ObjectService;
 import br.com.elo7.sonda.candidato.probe.dto.AreaDTO;
 import br.com.elo7.sonda.candidato.probe.dto.CommandDTO;
@@ -69,7 +70,7 @@ public class ProbeServiceTest {
 	}
 
 	@Test
-	public void should_find_probe_success() throws Exception {
+	public void should_find_probe_success() {
 		Probe expectedProbe = generator.nextObject(Probe.class);
 		Long probeId = generator.nextLong();
 		expectedProbe.setId(probeId);
@@ -85,8 +86,8 @@ public class ProbeServiceTest {
 
 	@Test
 	public void should_find_probe_dont_exists_error() {
-		Exception appException = assertThrows(Exception.class, () ->
-				service.find(generator.nextLong())
+		ApplicationException appException = assertThrows(ApplicationException.class, () ->
+			service.find(generator.nextLong())
 		);
 		assertEquals("Probe don't exists", appException.getMessage());
 	}
@@ -110,7 +111,7 @@ public class ProbeServiceTest {
 	}
 
 	@Test
-	public void should_send_command_success() throws Exception {
+	public void should_send_command_success() {
 		Probe expectedProbe = generator.nextObject(Probe.class);
 		Long expectedProbeId = generator.nextLong();
 		Long expectedPlanetId = generator.nextLong();
@@ -136,7 +137,7 @@ public class ProbeServiceTest {
 	}
 
 	@Test
-	public void should_move_probe_success() throws Exception {
+	public void should_move_probe_success() {
 		String commands = "LMLMLMLMM";
 		ProbeDTO probe = generator.nextObject(ProbeDTO.class);
 		probe.setY(2);
@@ -151,7 +152,7 @@ public class ProbeServiceTest {
 	}
 
 	@Test
-	public void should_move_probe_2_success() throws Exception {
+	public void should_move_probe_2_success() {
 		String commands = "MMRMMRMRRML";
 		ProbeDTO probe = generator.nextObject(ProbeDTO.class);
 		probe.setY(3);
@@ -166,7 +167,7 @@ public class ProbeServiceTest {
 	}
 
 	@Test
-	public void should_send_to_planet_success() throws Exception {
+	public void should_send_to_planet_success() {
 		var expectedProbe = generator.nextObject(Probe.class);
 		var area = generator.nextObject(AreaDTO.class);
 		var expectedProbeId = generator.nextLong();

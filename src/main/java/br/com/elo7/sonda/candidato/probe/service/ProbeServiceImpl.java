@@ -1,5 +1,6 @@
 package br.com.elo7.sonda.candidato.probe.service;
 
+import br.com.elo7.sonda.candidato.exception.ApplicationException;
 import br.com.elo7.sonda.candidato.planet.dto.ObjectDTO;
 import br.com.elo7.sonda.candidato.planet.service.ObjectService;
 import br.com.elo7.sonda.candidato.probe.dto.AreaDTO;
@@ -10,6 +11,7 @@ import br.com.elo7.sonda.candidato.probe.repository.ProbeRepository;
 import br.com.elo7.sonda.candidato.probe.service.movements.Movement;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,11 +38,11 @@ public class ProbeServiceImpl implements ProbeService {
         this.repository.save(modelMapper.map(probeDTO, Probe.class));
     }
 
-    public ProbeDTO find(Long id) throws Exception {
+    public ProbeDTO find(Long id) {
         return this.repository
                 .findById(id)
                 .map(probe -> modelMapper.map(probe, ProbeDTO.class))
-                .orElseThrow(() -> new Exception("Probe don't exists"));
+                .orElseThrow(() -> new ApplicationException("Probe don't exists", HttpStatus.BAD_REQUEST));
     }
 
     public List<ProbeDTO> findAll() {
@@ -51,7 +53,7 @@ public class ProbeServiceImpl implements ProbeService {
                 .collect(Collectors.toList());
     }
 
-    public void sendCommand(Long probeId, CommandDTO commandDTO) throws Exception {
+    public void sendCommand(Long probeId, CommandDTO commandDTO) {
         ProbeDTO probe = find(probeId);
         probe.setDirection(commandDTO.getDirection());
         moveProbe(probe, commandDTO.getCommands());
@@ -59,7 +61,7 @@ public class ProbeServiceImpl implements ProbeService {
         objectService.receiveObject(new ObjectDTO(probe, commandDTO.getPlanetId()));
     }
 
-    public void sendToPlanet(Long probeId, AreaDTO area) throws Exception {
+    public void sendToPlanet(Long probeId, AreaDTO area) {
         ProbeDTO probe = find(probeId);
         probe.setX(area.getX());
         probe.setY(area.getY());
@@ -67,12 +69,12 @@ public class ProbeServiceImpl implements ProbeService {
         objectService.receiveObject(new ObjectDTO(probe, area.getPlanetId()));
     }
 
-    public void moveProbe(ProbeDTO probe, String commands) throws Exception {
+    public void moveProbe(ProbeDTO probe, String commands) {
         for (char command : commands.toCharArray()) {
             probe = movements.stream()
                     .filter(movement -> movement.findCommand().command == command)
                     .findFirst()
-                    .orElseThrow(() -> new Exception("Command not recognized"))
+                    .orElseThrow(() -> new ApplicationException("Command not recognized", HttpStatus.BAD_REQUEST))
                     .setProbe(probe)
                     .moveTo()
                     .getProbe();

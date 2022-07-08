@@ -1,5 +1,6 @@
 package br.com.elo7.sonda.candidato.planet.service;
 
+import br.com.elo7.sonda.candidato.exception.ApplicationException;
 import br.com.elo7.sonda.candidato.planet.dto.ObjectDTO;
 import br.com.elo7.sonda.candidato.planet.dto.PlanetDTO;
 import br.com.elo7.sonda.candidato.planet.entity.Object;
@@ -57,7 +58,7 @@ public class ObjectServiceTest {
 	}
 
 	@Test
-	public void should_receive_object_that_not_exists_success() throws Exception {
+	public void should_receive_object_that_not_exists_success() {
 		var objectDTO = generator.nextObject(ObjectDTO.class);
 		var planet = generator.nextObject(PlanetDTO.class);
 
@@ -81,7 +82,7 @@ public class ObjectServiceTest {
 	}
 
 	@Test
-	public void should_receive_object_that_exists_success() throws Exception {
+	public void should_receive_object_that_exists_success() {
 		var objectDTO = generator.nextObject(ObjectDTO.class);
 		var planet = generator.nextObject(PlanetDTO.class);
 		var currentObject = generator.nextObject(Object.class);
@@ -107,7 +108,7 @@ public class ObjectServiceTest {
 	}
 
 	@Test
-	public void should_receive_object_with_coordinates_out_of_planet_error() throws Exception {
+	public void should_receive_object_with_coordinates_out_of_planet_error() {
 		var objectDTO = generator.nextObject(ObjectDTO.class);
 		var planet = generator.nextObject(PlanetDTO.class);
 
@@ -118,14 +119,14 @@ public class ObjectServiceTest {
 		when(planetService.find(planet.getId()))
 				.thenReturn(planet);
 
-		Exception appException = assertThrows(Exception.class, () ->
+		ApplicationException appException = assertThrows(ApplicationException.class, () ->
 			service.receiveObject(objectDTO)
 		);
 		assertEquals("Object is off planet", appException.getMessage());
 	}
 
 	@Test
-	public void should_receive_object_with_another_object_in_current_coordinates_error() throws Exception {
+	public void should_receive_object_with_another_object_in_current_coordinates_error() {
 		var objectDTO = generator.nextObject(ObjectDTO.class);
 		var planet = generator.nextObject(PlanetDTO.class);
 
@@ -140,7 +141,7 @@ public class ObjectServiceTest {
 		when(planetService.find(planet.getId()))
 				.thenReturn(planet);
 
-		Exception appException = assertThrows(Exception.class, () ->
+		ApplicationException appException = assertThrows(ApplicationException.class, () ->
 				service.receiveObject(objectDTO)
 		);
 		assertEquals("There is already an object in this area", appException.getMessage());

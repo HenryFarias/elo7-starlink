@@ -23,7 +23,7 @@ public class PlanetController {
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public PlanetDTO find(@PathVariable Long id) throws Exception {
+    public PlanetDTO find(@PathVariable Long id) {
         return service.find(id);
     }
 
