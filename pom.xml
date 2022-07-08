@@ -8,10 +8,10 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.elo7</groupId>
-	<artifactId>sonda.candidato</artifactId>
+	<artifactId>starlink</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>sonda.candidato</name>
-	<description>Projeto para teste dos candidatos</description>
+	<name>starlink</name>
+	<description>Project to send probes to planets.</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
