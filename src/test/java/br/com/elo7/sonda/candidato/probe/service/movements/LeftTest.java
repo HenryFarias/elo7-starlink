@@ -1,12 +1,12 @@
 package br.com.elo7.sonda.candidato.probe.service.movements;
 
-import br.com.elo7.sonda.candidato.probe.dto.ProbeDTO;
-import br.com.elo7.sonda.candidato.probe.enumeration.Command;
+import br.com.elo7.sonda.candidato.domains.probe.dto.ProbeDTO;
+import br.com.elo7.sonda.candidato.domains.probe.enumeration.Command;
+import br.com.elo7.sonda.candidato.domains.probe.service.movements.Left;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 
-import static br.com.elo7.sonda.candidato.probe.enumeration.Command.L;
-import static br.com.elo7.sonda.candidato.probe.enumeration.Direction.*;
+import static br.com.elo7.sonda.candidato.domains.probe.enumeration.Command.L;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LeftTest {

@@ -1,5 +1,6 @@
 package br.com.elo7.sonda.candidato.planet.dto;
 
+import br.com.elo7.sonda.candidato.domains.planet.dto.PlanetDTO;
 import br.com.elo7.sonda.candidato.exception.ApplicationException;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;

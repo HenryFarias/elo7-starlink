@@ -1,11 +1,14 @@
 package br.com.elo7.sonda.candidato.planet.service;
 
+import br.com.elo7.sonda.candidato.domains.planet.service.ObjectService;
+import br.com.elo7.sonda.candidato.domains.planet.service.ObjectServiceImpl;
+import br.com.elo7.sonda.candidato.domains.planet.service.PlanetService;
 import br.com.elo7.sonda.candidato.exception.ApplicationException;
-import br.com.elo7.sonda.candidato.planet.dto.ObjectDTO;
-import br.com.elo7.sonda.candidato.planet.dto.PlanetDTO;
-import br.com.elo7.sonda.candidato.planet.entity.Object;
-import br.com.elo7.sonda.candidato.planet.entity.Planet;
-import br.com.elo7.sonda.candidato.planet.repository.ObjectRepository;
+import br.com.elo7.sonda.candidato.domains.planet.dto.ObjectDTO;
+import br.com.elo7.sonda.candidato.domains.planet.dto.PlanetDTO;
+import br.com.elo7.sonda.candidato.domains.planet.entity.Object;
+import br.com.elo7.sonda.candidato.domains.planet.entity.Planet;
+import br.com.elo7.sonda.candidato.domains.planet.repository.ObjectRepository;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
