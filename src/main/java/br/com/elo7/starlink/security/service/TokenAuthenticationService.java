@@ -1,8 +1,8 @@
 package br.com.elo7.starlink.security.service;
 
-import br.com.elo7.starlink.domains.user.entity.User;
+import br.com.elo7.starlink.domains.user.dto.UserDTO;
 import br.com.elo7.starlink.domains.user.service.UserService;
-import br.com.elo7.starlink.security.dto.UserDTO;
+import br.com.elo7.starlink.security.dto.UserAuthDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -22,7 +22,7 @@ public class TokenAuthenticationService {
     private static final String TOKEN_PREFIX = "Bearer";
     private static final String HEADER_STRING = "Authorization";
 
-    public static void addAuthentication(HttpServletResponse response, User user) throws IOException {
+    public static void addAuthentication(HttpServletResponse response, UserDTO user) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String JWT = Jwts.builder()
                 .setSubject(user.getEmail())
@@ -30,7 +30,7 @@ public class TokenAuthenticationService {
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
 
-        UserDTO userResponse = buildToUserResponse(JWT, user);
+        UserAuthDTO userResponse = buildToUserResponse(JWT, user);
 
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
@@ -48,16 +48,25 @@ public class TokenAuthenticationService {
                     .getBody()
                     .getSubject();
             String email = payload.split("-")[0];
-            User user = userService.findByEmail(email);
+            UserDTO user = userService.findByEmail(email);
             if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+                return new UsernamePasswordAuthenticationToken(buildToUserAuth(user), user.getPassword(), null);
             }
         }
         return null;
     }
 
-    private static UserDTO buildToUserResponse(String token, User user) {
-        UserDTO userResponse = new UserDTO();
+    private static UserAuthDTO buildToUserAuth(UserDTO user) {
+        UserAuthDTO auth = new UserAuthDTO();
+        auth.setId(user.getId());
+        auth.setEmail(user.getEmail());
+        auth.setName(user.getName());
+        auth.setPassword(user.getPassword());
+        return auth;
+    }
+
+    private static UserAuthDTO buildToUserResponse(String token, UserDTO user) {
+        UserAuthDTO userResponse = new UserAuthDTO();
         userResponse.setId(user.getId());
         userResponse.setEmail(user.getEmail());
         userResponse.setToken(token);

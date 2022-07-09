@@ -1,20 +1,61 @@
 package br.com.elo7.starlink.security.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserAuthDTO {
+import java.util.Collection;
 
-    @JsonInclude
+public class UserAuthDTO implements UserDetails {
+
     private Long id;
-
-    @JsonInclude
     private String name;
 
-    @JsonInclude
-    private String email;
+    @JsonIgnore
+    private String password;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String email;
     private String token;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    @JsonIgnore
+    public String getUsername() {
+        return this.email;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    @JsonIgnore
+    public boolean isEnabled() {
+        return true;
+    }
 
     public Long getId() {
         return id;
@@ -46,5 +87,9 @@ public class UserAuthDTO {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
