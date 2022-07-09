@@ -1,11 +1,18 @@
 package br.com.elo7.starlink.domains.probe.dto;
 
 import br.com.elo7.starlink.domains.probe.enumeration.Direction;
-import br.com.elo7.starlink.domains.probe.enumeration.Direction;
+
+import javax.validation.constraints.NotNull;
 
 public class CommandDTO {
+
+	@NotNull(message = "planetId is required")
 	private Long planetId;
+
+	@NotNull(message = "direction is required")
 	private Direction direction;
+
+	@NotNull(message = "commands are required")
 	private String commands;
 
 	public Long getPlanetId() {

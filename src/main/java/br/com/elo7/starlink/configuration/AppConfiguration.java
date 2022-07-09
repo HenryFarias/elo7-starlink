@@ -10,4 +10,9 @@ public class AppConfiguration {
     public ModelMapper modelMapper(){
         return new ModelMapper();
     }
+
+//    @Bean
+//    public Validator defaultValidator() {
+//        return new LocalValidatorFactoryBean();
+//    }
 }

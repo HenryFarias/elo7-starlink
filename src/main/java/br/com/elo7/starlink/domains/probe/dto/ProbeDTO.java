@@ -1,14 +1,27 @@
 package br.com.elo7.starlink.domains.probe.dto;
 
 import br.com.elo7.starlink.domains.probe.enumeration.Direction;
-import br.com.elo7.starlink.domains.probe.enumeration.Direction;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.validation.constraints.NotBlank;
 
 public class ProbeDTO {
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
+
+    @NotBlank(message = "Name is required")
     private String name;
+
     private String description;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Direction direction;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int x;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private int y;
 
     public Long getId() {

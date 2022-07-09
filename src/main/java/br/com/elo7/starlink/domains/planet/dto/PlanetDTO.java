@@ -1,17 +1,30 @@
 package br.com.elo7.starlink.domains.planet.dto;
 
 import br.com.elo7.starlink.exception.ApplicationException;
-import br.com.elo7.starlink.exception.ApplicationException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class PlanetDTO {
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
-    private String name;
+
     private String description;
-    private Integer width;
-    private Integer height;
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private List<ObjectDTO> objects;
+
+    @NotBlank(message = "Name is required")
+    private String name;
+
+    @NotNull(message = "Width is required")
+    private Integer width;
+
+    @NotNull(message = "Height is required")
+    private Integer height;
 
     public PlanetDTO coordinatesIsInsidePlanet(int x, int y) {
         var invalid = x > this.getWidth() ||
