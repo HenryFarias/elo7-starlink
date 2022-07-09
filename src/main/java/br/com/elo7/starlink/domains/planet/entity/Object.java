@@ -8,12 +8,22 @@ public class Object {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column
     private String name;
+
+    @Column
     private String description;
+
+    @Column
+    private String objectId;
+
     @Column
     private int x;
+
     @Column
     private int y;
+
     @ManyToOne
     @JoinColumn(name = "planet_id")
     private Planet planet;
@@ -64,5 +74,13 @@ public class Object {
 
     public void setPlanet(Planet planet) {
         this.planet = planet;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 }

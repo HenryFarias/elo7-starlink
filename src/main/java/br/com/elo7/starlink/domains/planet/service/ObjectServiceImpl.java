@@ -5,11 +5,6 @@ import br.com.elo7.starlink.domains.planet.dto.PlanetDTO;
 import br.com.elo7.starlink.domains.planet.entity.Object;
 import br.com.elo7.starlink.domains.planet.entity.Planet;
 import br.com.elo7.starlink.domains.planet.repository.ObjectRepository;
-import br.com.elo7.starlink.domains.planet.dto.ObjectDTO;
-import br.com.elo7.starlink.domains.planet.dto.PlanetDTO;
-import br.com.elo7.starlink.domains.planet.entity.Object;
-import br.com.elo7.starlink.domains.planet.entity.Planet;
-import br.com.elo7.starlink.domains.planet.repository.ObjectRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +25,7 @@ public class ObjectServiceImpl implements ObjectService {
         PlanetDTO planet = planetService.find(objectDTO.getPlanetId())
                 .coordinatesIsInsidePlanet(objectDTO.getX(), objectDTO.getY())
                 .thereIsNoObjectAtCoordinates(objectDTO.getX(), objectDTO.getY());
-        repository.findByIdAndPlanet_Id(objectDTO.getId(), planet.getId())
+        repository.findByObjectIdAndPlanet_Id(objectDTO.getObjectId(), planet.getId())
             .ifPresentOrElse(
                 (object -> updateCoordinates(object, objectDTO.getX(), objectDTO.getY())),
                 () -> save(objectDTO, planet)

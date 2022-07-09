@@ -5,22 +5,25 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ObjectDTO {
     private Long id;
+
     @JsonIgnore
     private Long planetId;
+
     private String name;
     private String description;
+    private String objectId;
     private int x;
     private int y;
 
     public ObjectDTO() {}
 
     public ObjectDTO(ProbeDTO probeDTO, Long planetId) {
-        this.id = probeDTO.getId();
         this.planetId = planetId;
         this.name = probeDTO.getName();
         this.description = probeDTO.getDescription();
         this.x = probeDTO.getX();
         this.y = probeDTO.getY();
+        this.objectId = probeDTO.getId().toString();
     }
 
     public Long getId() {
@@ -69,5 +72,13 @@ public class ObjectDTO {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public String getObjectId() {
+        return objectId;
+    }
+
+    public void setObjectId(String objectId) {
+        this.objectId = objectId;
     }
 }
