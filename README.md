@@ -7,10 +7,9 @@ This in an innovation project that send probes to planets!
 ### Start application
 ### Features
 ### Roadmap
-- Autenticação
-- Revisão
-- Banco de dados relacional
 - Documentação
+- Revisão
+- Test para Autenticação
 - Testes de integração
 - Teste e2e
 - Teste de carga
