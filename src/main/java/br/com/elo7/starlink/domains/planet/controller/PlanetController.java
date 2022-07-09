@@ -1,6 +1,5 @@
 package br.com.elo7.starlink.domains.planet.controller;
 
-import br.com.elo7.starlink.domains.planet.service.PlanetService;
 import br.com.elo7.starlink.domains.planet.dto.PlanetDTO;
 import br.com.elo7.starlink.domains.planet.service.PlanetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/planet")
-public class PlanetController {
+public class PlanetController implements PlanetControllerDocument {
 
     @Autowired
     private PlanetService service;

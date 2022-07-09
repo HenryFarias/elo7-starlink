@@ -8,6 +8,7 @@ This in an innovation project that send probes to planets!
 ### Features
 ### Roadmap
 - Documentação
+- Validação
 - Revisão
 - Test para Autenticação
 - Testes de integração

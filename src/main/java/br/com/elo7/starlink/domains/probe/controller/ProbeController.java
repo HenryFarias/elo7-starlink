@@ -1,9 +1,5 @@
 package br.com.elo7.starlink.domains.probe.controller;
 
-import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
-import br.com.elo7.starlink.domains.probe.service.ProbeService;
-import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
-import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
 import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
 import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
 import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
@@ -16,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/probe")
-public class ProbeController {
+public class ProbeController implements ProbeControllerDocument {
 
     @Autowired
     private ProbeService service;
@@ -29,19 +25,19 @@ public class ProbeController {
 
     @PostMapping("/{id}/command")
     @ResponseStatus(HttpStatus.OK)
-    public void sendCommand(@PathVariable Long id, @RequestBody CommandDTO request) throws Exception {
+    public void sendCommand(@PathVariable Long id, @RequestBody CommandDTO request) {
         service.sendCommand(id, request);
     }
 
     @PostMapping("/{id}/send")
     @ResponseStatus(HttpStatus.OK)
-    public void sendToPlanet(@PathVariable Long id, @RequestBody AreaDTO request) throws Exception {
+    public void sendToPlanet(@PathVariable Long id, @RequestBody AreaDTO request) {
         service.sendToPlanet(id, request);
     }
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ProbeDTO find(@PathVariable Long id) throws Exception {
+    public ProbeDTO find(@PathVariable Long id) {
         return service.find(id);
     }
 

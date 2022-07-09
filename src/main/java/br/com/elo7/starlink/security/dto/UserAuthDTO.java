@@ -2,7 +2,7 @@ package br.com.elo7.starlink.security.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-public class UserDTO {
+public class UserAuthDTO {
 
     @JsonInclude
     private Long id;
