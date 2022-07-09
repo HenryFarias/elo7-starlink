@@ -7,6 +7,7 @@ import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 
 import static br.com.elo7.starlink.domains.probe.enumeration.Command.L;
+import static br.com.elo7.starlink.domains.probe.enumeration.Direction.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LeftTest {

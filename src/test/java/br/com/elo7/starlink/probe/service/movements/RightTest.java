@@ -3,11 +3,11 @@ package br.com.elo7.starlink.probe.service.movements;
 import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
 import br.com.elo7.starlink.domains.probe.enumeration.Command;
 import br.com.elo7.starlink.domains.probe.service.movements.Right;
-import br.com.elo7.starlink.domains.probe.service.movements.Right;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 
 import static br.com.elo7.starlink.domains.probe.enumeration.Command.R;
+import static br.com.elo7.starlink.domains.probe.enumeration.Direction.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RightTest {
