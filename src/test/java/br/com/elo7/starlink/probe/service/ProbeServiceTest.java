@@ -1,22 +1,14 @@
 package br.com.elo7.starlink.probe.service;
 
-import br.com.elo7.starlink.domains.probe.service.ProbeService;
-import br.com.elo7.starlink.domains.probe.service.ProbeServiceImpl;
-import br.com.elo7.starlink.exception.ApplicationException;
 import br.com.elo7.starlink.domains.planet.service.ObjectService;
 import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
 import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
 import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
 import br.com.elo7.starlink.domains.probe.entity.Probe;
-import br.com.elo7.starlink.domains.probe.repository.ProbeRepository;
-import br.com.elo7.starlink.domains.probe.service.movements.Forward;
-import br.com.elo7.starlink.domains.probe.service.movements.Left;
-import br.com.elo7.starlink.domains.probe.service.movements.Movement;
-import br.com.elo7.starlink.domains.probe.service.movements.Right;
-import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
-import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
 import br.com.elo7.starlink.domains.probe.enumeration.Direction;
+import br.com.elo7.starlink.domains.probe.repository.ProbeRepository;
 import br.com.elo7.starlink.domains.probe.service.ProbeService;
+import br.com.elo7.starlink.domains.probe.service.ProbeServiceImpl;
 import br.com.elo7.starlink.domains.probe.service.movements.Forward;
 import br.com.elo7.starlink.domains.probe.service.movements.Left;
 import br.com.elo7.starlink.domains.probe.service.movements.Movement;
@@ -35,8 +27,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static br.com.elo7.starlink.domains.probe.enumeration.Direction.E;
-import static br.com.elo7.starlink.domains.probe.enumeration.Direction.N;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -211,5 +201,19 @@ public class ProbeServiceTest {
 			assertEquals(area.getY(), object.getY());
 			return true;
 		}));
+	}
+
+	@Test
+	public void should_send_to_planet_with_probe_already_exists_on_planet_error() {
+		var probeId = generator.nextLong();
+		var area = generator.nextObject(AreaDTO.class);
+
+		when(objectService.existsByObjectIdAndPlanetId(String.valueOf(probeId), area.getPlanetId()))
+				.thenReturn(true);
+
+		ApplicationException appException = assertThrows(ApplicationException.class, () ->
+				service.sendToPlanet(probeId, area)
+		);
+		assertEquals("Probe is already on this planet", appException.getMessage());
 	}
 }

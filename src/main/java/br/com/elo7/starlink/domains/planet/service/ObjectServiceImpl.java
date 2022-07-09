@@ -21,6 +21,10 @@ public class ObjectServiceImpl implements ObjectService {
     @Autowired
     private ModelMapper modelMapper;
 
+    public boolean existsByObjectIdAndPlanetId(String objectId, Long planetId) {
+        return repository.existsByObjectIdAndPlanet_Id(objectId, planetId);
+    }
+
     public void receiveObject(ObjectDTO objectDTO) {
         PlanetDTO planet = planetService.find(objectDTO.getPlanetId())
                 .coordinatesIsInsidePlanet(objectDTO.getX(), objectDTO.getY())

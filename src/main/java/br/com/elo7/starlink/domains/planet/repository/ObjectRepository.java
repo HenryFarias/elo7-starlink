@@ -9,4 +9,5 @@ import java.util.Optional;
 @Repository
 public interface ObjectRepository extends JpaRepository<Object, Long> {
     Optional<Object> findByObjectIdAndPlanet_Id(String objectId, Long planetId);
+    boolean existsByObjectIdAndPlanet_Id(String objectId, Long planetId);
 }

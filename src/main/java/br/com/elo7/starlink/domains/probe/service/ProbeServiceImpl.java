@@ -1,18 +1,12 @@
 package br.com.elo7.starlink.domains.probe.service;
 
-import br.com.elo7.starlink.domains.probe.entity.Probe;
-import br.com.elo7.starlink.domains.probe.service.movements.Movement;
-import br.com.elo7.starlink.exception.ApplicationException;
 import br.com.elo7.starlink.domains.planet.dto.ObjectDTO;
 import br.com.elo7.starlink.domains.planet.service.ObjectService;
 import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
 import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
 import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
-import br.com.elo7.starlink.domains.probe.repository.ProbeRepository;
-import br.com.elo7.starlink.domains.planet.dto.ObjectDTO;
-import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
-import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
 import br.com.elo7.starlink.domains.probe.entity.Probe;
+import br.com.elo7.starlink.domains.probe.repository.ProbeRepository;
 import br.com.elo7.starlink.domains.probe.service.movements.Movement;
 import br.com.elo7.starlink.exception.ApplicationException;
 import org.modelmapper.ModelMapper;
@@ -68,6 +62,9 @@ public class ProbeServiceImpl implements ProbeService {
     }
 
     public void sendToPlanet(Long probeId, AreaDTO area) {
+        if (objectService.existsByObjectIdAndPlanetId(probeId.toString(), area.getPlanetId())) {
+            throw new ApplicationException("Probe is already on this planet", HttpStatus.BAD_REQUEST);
+        }
         ProbeDTO probe = find(probeId);
         probe.setX(area.getX());
         probe.setY(area.getY());

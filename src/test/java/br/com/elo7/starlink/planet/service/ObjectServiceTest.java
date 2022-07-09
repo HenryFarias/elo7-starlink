@@ -1,17 +1,12 @@
 package br.com.elo7.starlink.planet.service;
 
-import br.com.elo7.starlink.domains.planet.service.ObjectService;
-import br.com.elo7.starlink.domains.planet.service.ObjectServiceImpl;
-import br.com.elo7.starlink.domains.planet.service.PlanetService;
-import br.com.elo7.starlink.exception.ApplicationException;
 import br.com.elo7.starlink.domains.planet.dto.ObjectDTO;
 import br.com.elo7.starlink.domains.planet.dto.PlanetDTO;
 import br.com.elo7.starlink.domains.planet.entity.Object;
 import br.com.elo7.starlink.domains.planet.entity.Planet;
 import br.com.elo7.starlink.domains.planet.repository.ObjectRepository;
-import br.com.elo7.starlink.domains.planet.dto.ObjectDTO;
-import br.com.elo7.starlink.domains.planet.entity.Object;
-import br.com.elo7.starlink.domains.planet.repository.ObjectRepository;
+import br.com.elo7.starlink.domains.planet.service.ObjectService;
+import br.com.elo7.starlink.domains.planet.service.ObjectServiceImpl;
 import br.com.elo7.starlink.domains.planet.service.PlanetService;
 import br.com.elo7.starlink.exception.ApplicationException;
 import org.jeasy.random.EasyRandom;
@@ -26,8 +21,7 @@ import org.modelmapper.ModelMapper;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -79,7 +73,7 @@ public class ObjectServiceTest {
 
 		when(planetService.find(planet.getId()))
 				.thenReturn(planet);
-		when(repository.findByIdAndPlanet_Id(objectDTO.getId(), planet.getId()))
+		when(repository.findByObjectIdAndPlanet_Id(objectDTO.getId().toString(), planet.getId()))
 				.thenReturn(Optional.empty());
 
 		service.receiveObject(objectDTO);
@@ -105,7 +99,7 @@ public class ObjectServiceTest {
 
 		when(planetService.find(planet.getId()))
 				.thenReturn(planet);
-		when(repository.findByIdAndPlanet_Id(objectDTO.getId(), planet.getId()))
+		when(repository.findByObjectIdAndPlanet_Id(objectDTO.getId().toString(), planet.getId()))
 				.thenReturn(Optional.of(currentObject));
 
 		service.receiveObject(objectDTO);
@@ -154,5 +148,18 @@ public class ObjectServiceTest {
 				service.receiveObject(objectDTO)
 		);
 		assertEquals("There is already an object in this area", appException.getMessage());
+	}
+
+	@Test
+	public void should_validate_exists_probe_on_planet_success() {
+		var objectDTO = generator.nextObject(ObjectDTO.class);
+		var planet = generator.nextObject(PlanetDTO.class);
+
+		when(repository.existsByObjectIdAndPlanet_Id(objectDTO.getId().toString(), planet.getId()))
+				.thenReturn(true);
+
+		boolean exists = service.existsByObjectIdAndPlanetId(objectDTO.getId().toString(), planet.getId());
+
+		assertTrue(exists);
 	}
 }

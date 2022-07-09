@@ -15,7 +15,7 @@ public class Object {
     @Column
     private String description;
 
-    @Column
+    @Column(unique = true)
     private String objectId;
 
     @Column
