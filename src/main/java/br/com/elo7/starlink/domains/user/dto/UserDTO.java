@@ -1,10 +1,14 @@
 package br.com.elo7.starlink.domains.user.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class UserDTO {
 
     private Long id;
     private String name;
     private String email;
+
+    @JsonIgnore
     private String password;
 
     public Long getId() {

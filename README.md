@@ -7,7 +7,6 @@ This in an innovation project that send probes to planets!
 ### Start application
 ### Features
 ### Roadmap
-- Documentação
 - Validação
 - Revisão
 - Test para Autenticação
