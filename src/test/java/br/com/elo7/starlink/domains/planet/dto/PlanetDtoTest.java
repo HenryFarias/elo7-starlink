@@ -1,7 +1,5 @@
-package br.com.elo7.starlink.planet.dto;
+package br.com.elo7.starlink.domains.planet.dto;
 
-import br.com.elo7.starlink.domains.planet.dto.PlanetDTO;
-import br.com.elo7.starlink.exception.ApplicationException;
 import br.com.elo7.starlink.exception.ApplicationException;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;

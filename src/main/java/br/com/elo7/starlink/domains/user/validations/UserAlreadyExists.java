@@ -12,7 +12,6 @@ public class UserAlreadyExists implements ConstraintValidator<UserAlreadyExistsV
     private UserService userService;
 
     public boolean isValid(String email, ConstraintValidatorContext cxt) {
-        var user = userService.findByEmail(email);
-        return user == null;
+        return !userService.existsByEmail(email);
     }
 }

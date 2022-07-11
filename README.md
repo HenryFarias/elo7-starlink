@@ -10,10 +10,6 @@ This in an innovation project that send probes to planets!
 http://localhost:8080/swagger-ui/index.html
 
 ### Roadmap
-- Validação
-- probe já está no planeta. Buscar por objectId
-
-
 - Revisão
 - usuarios simultaneos enviando ocmandos para mesma sonda
 - verificar transações

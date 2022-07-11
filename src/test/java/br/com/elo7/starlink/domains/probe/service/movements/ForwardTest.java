@@ -1,4 +1,4 @@
-package br.com.elo7.starlink.probe.service.movements;
+package br.com.elo7.starlink.domains.probe.service.movements;
 
 import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
 import br.com.elo7.starlink.domains.probe.enumeration.Command;

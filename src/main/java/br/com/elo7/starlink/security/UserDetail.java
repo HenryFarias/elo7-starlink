@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 public class UserDetail implements UserDetailsService {
 
@@ -22,8 +20,6 @@ public class UserDetail implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        var user = Optional.ofNullable(userService.findByEmail(email))
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
-        return modelMapper.map(user, UserAuthDTO.class);
+        return modelMapper.map(userService.findByEmail(email), UserAuthDTO.class);
     }
 }

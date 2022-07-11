@@ -1,13 +1,10 @@
-package br.com.elo7.starlink.planet.service;
+package br.com.elo7.starlink.domains.planet.service;
 
 import br.com.elo7.starlink.domains.planet.dto.ObjectDTO;
 import br.com.elo7.starlink.domains.planet.dto.PlanetDTO;
 import br.com.elo7.starlink.domains.planet.entity.Object;
 import br.com.elo7.starlink.domains.planet.entity.Planet;
 import br.com.elo7.starlink.domains.planet.repository.ObjectRepository;
-import br.com.elo7.starlink.domains.planet.service.ObjectService;
-import br.com.elo7.starlink.domains.planet.service.ObjectServiceImpl;
-import br.com.elo7.starlink.domains.planet.service.PlanetService;
 import br.com.elo7.starlink.exception.ApplicationException;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;

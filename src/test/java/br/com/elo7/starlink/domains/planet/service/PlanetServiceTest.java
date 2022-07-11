@@ -1,13 +1,9 @@
-package br.com.elo7.starlink.planet.service;
+package br.com.elo7.starlink.domains.planet.service;
 
-import br.com.elo7.starlink.domains.planet.service.PlanetService;
-import br.com.elo7.starlink.domains.planet.service.PlanetServiceImpl;
 import br.com.elo7.starlink.exception.ApplicationException;
 import br.com.elo7.starlink.domains.planet.dto.PlanetDTO;
 import br.com.elo7.starlink.domains.planet.entity.Planet;
 import br.com.elo7.starlink.domains.planet.repository.PlanetRepository;
-import br.com.elo7.starlink.domains.planet.service.PlanetService;
-import br.com.elo7.starlink.exception.ApplicationException;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -48,11 +44,6 @@ public class PlanetServiceTest {
 	public void should_save_planet_success() {
 		service.save(generator.nextObject(PlanetDTO.class));
 		verify(repository, times(1)).save(any());
-	}
-
-	@Test
-	public void should_save_planet_validation_error() {
-		// todo: implements validations
 	}
 
 	@Test

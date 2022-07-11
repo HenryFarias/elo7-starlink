@@ -1,4 +1,4 @@
-package br.com.elo7.starlink.probe.service;
+package br.com.elo7.starlink.domains.probe.service;
 
 import br.com.elo7.starlink.domains.planet.service.ObjectService;
 import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
