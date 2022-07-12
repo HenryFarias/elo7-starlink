@@ -1,13 +1,12 @@
 package br.com.elo7.starlink.exception;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+public class ErrorInfo {
 
-class ErrorInfo {
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
 
-    ErrorInfo(String message) {
+    public ErrorInfo() {}
+
+    public ErrorInfo(String message) {
         this.message = message;
     }
 

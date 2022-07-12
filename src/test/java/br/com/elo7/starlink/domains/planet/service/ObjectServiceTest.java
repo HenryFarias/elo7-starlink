@@ -70,7 +70,7 @@ public class ObjectServiceTest {
 
 		when(planetService.find(planet.getId()))
 				.thenReturn(planet);
-		when(repository.findByObjectIdAndPlanet_Id(objectDTO.getId().toString(), planet.getId()))
+		when(repository.findByObjectIdAndPlanet_Id(objectDTO.getObjectId(), planet.getId()))
 				.thenReturn(Optional.empty());
 
 		service.receiveObject(objectDTO);
@@ -96,7 +96,7 @@ public class ObjectServiceTest {
 
 		when(planetService.find(planet.getId()))
 				.thenReturn(planet);
-		when(repository.findByObjectIdAndPlanet_Id(objectDTO.getId().toString(), planet.getId()))
+		when(repository.findByObjectIdAndPlanet_Id(objectDTO.getObjectId(), planet.getId()))
 				.thenReturn(Optional.of(currentObject));
 
 		service.receiveObject(objectDTO);

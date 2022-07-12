@@ -10,7 +10,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,7 +19,7 @@ public class DefaultExceptionHandler {
     Logger log = LoggerFactory.getLogger(DefaultExceptionHandler.class);
 
     @ExceptionHandler(value = ApplicationException.class)
-    public ResponseEntity<ErrorInfo> applicationErrorHandler(HttpServletRequest req, ApplicationException e) {
+    public ResponseEntity<ErrorInfo> applicationErrorHandler(ApplicationException e) {
         String message = getMessage(e);
         ErrorInfo errorInfo = new ErrorInfo(message);
         log.error(message, e);
@@ -31,7 +30,7 @@ public class DefaultExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorInfo> handleValidationExceptions(HttpServletRequest req, MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorInfo> handleValidationExceptions(MethodArgumentNotValidException ex) {
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
@@ -42,7 +41,7 @@ public class DefaultExceptionHandler {
     }
 
     @ExceptionHandler(value = Exception.class)
-    public ResponseEntity<ErrorInfo> defaultErrorHandler(HttpServletRequest req, Exception e) {
+    public ResponseEntity<ErrorInfo> defaultErrorHandler(Exception e) {
         String message = "Ocorreu um erro ao executar a requisição";
         log.error(message, e);
         return new ResponseEntity<>(new ErrorInfo(message), HttpStatus.INTERNAL_SERVER_ERROR);

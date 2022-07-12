@@ -1,4 +1,4 @@
-package br.com.elo7.starlink.domains;
+package br.com.elo7.starlink.domains.mock;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;

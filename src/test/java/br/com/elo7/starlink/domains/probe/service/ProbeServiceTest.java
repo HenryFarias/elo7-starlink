@@ -7,8 +7,6 @@ import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
 import br.com.elo7.starlink.domains.probe.entity.Probe;
 import br.com.elo7.starlink.domains.probe.enumeration.Direction;
 import br.com.elo7.starlink.domains.probe.repository.ProbeRepository;
-import br.com.elo7.starlink.domains.probe.service.ProbeService;
-import br.com.elo7.starlink.domains.probe.service.ProbeServiceImpl;
 import br.com.elo7.starlink.domains.probe.service.movements.Forward;
 import br.com.elo7.starlink.domains.probe.service.movements.Left;
 import br.com.elo7.starlink.domains.probe.service.movements.Movement;
@@ -32,8 +30,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.beans.HasPropertyWithValue.hasProperty;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -130,9 +127,10 @@ public class ProbeServiceTest {
 		verify(objectService).receiveObject(argThat(object -> {
 			assertThat(object).isNotNull();
 			assertEquals(expectedPlanetId, object.getPlanetId());
-			assertEquals(expectedProbeId, object.getId());
+			assertNull(object.getId());
 			assertEquals(expectedProbe.getName(), object.getName());
 			assertEquals(expectedProbe.getDescription(), object.getDescription());
+			assertEquals(expectedProbe.getId().toString(), object.getObjectId());
 			return true;
 		}));
 	}
@@ -194,11 +192,12 @@ public class ProbeServiceTest {
 		verify(objectService).receiveObject(argThat(object -> {
 			assertThat(object).isNotNull();
 			assertEquals(expectedPlanetId, object.getPlanetId());
-			assertEquals(expectedProbeId, object.getId());
+			assertNull(object.getId());
 			assertEquals(expectedProbe.getName(), object.getName());
 			assertEquals(expectedProbe.getDescription(), object.getDescription());
 			assertEquals(area.getX(), object.getX());
 			assertEquals(area.getY(), object.getY());
+			assertEquals(expectedProbe.getId().toString(), object.getObjectId());
 			return true;
 		}));
 	}

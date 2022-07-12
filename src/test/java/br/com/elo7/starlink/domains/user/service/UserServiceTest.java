@@ -70,15 +70,6 @@ public class UserServiceTest {
     }
 
     @Test
-    public void should_find_user_by_email_dont_exists_success() {
-        var email = generator.nextObject(String.class);
-        when(repository.findByEmail(email))
-                .thenReturn(null);
-        var user = service.findByEmail(email);
-        assertNull(user);
-    }
-
-    @Test
     public void should_find_all_users_success() {
         var usersExpected = Arrays.asList(
                 generator.nextObject(User.class),

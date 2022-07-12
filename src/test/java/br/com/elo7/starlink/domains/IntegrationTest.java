@@ -1,6 +1,8 @@
 package br.com.elo7.starlink.domains;
 
+import br.com.elo7.starlink.domains.mock.AuthenticationMock;
 import br.com.elo7.starlink.security.service.TokenAuthenticationService;
+import com.google.gson.Gson;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class IntegrationTest {
+public abstract class IntegrationTest {
 
     @MockBean
     private TokenAuthenticationService tokenAuthenticationService;
@@ -25,11 +27,13 @@ public class IntegrationTest {
 
     protected final EasyRandom generator = new EasyRandom();
 
-    protected MockMvc mvc;
+    protected MockMvc mockMvc;
+
+    protected Gson gson = new Gson();
 
     @BeforeEach
     public void setup() {
-        mvc = MockMvcBuilders
+        mockMvc = MockMvcBuilders
                 .webAppContextSetup(context)
                 .apply(SecurityMockMvcConfigurers.springSecurity())
                 .build();

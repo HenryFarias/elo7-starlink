@@ -15,7 +15,8 @@ http://localhost:8080/swagger-ui/index.html
 - verificar transações
 
 
-- Test para Autenticação
 - Testes de integração
 - Teste e2e
+- Readme
+- Test para Autenticação
 - Teste de carga
