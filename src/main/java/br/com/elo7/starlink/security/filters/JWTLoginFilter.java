@@ -3,8 +3,6 @@ package br.com.elo7.starlink.security.filters;
 import br.com.elo7.starlink.domains.user.service.UserService;
 import br.com.elo7.starlink.security.dto.LoginDTO;
 import br.com.elo7.starlink.security.service.TokenAuthenticationService;
-import br.com.elo7.starlink.security.dto.LoginDTO;
-import br.com.elo7.starlink.security.service.TokenAuthenticationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,8 +23,6 @@ import java.util.Collections;
 
 public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    private UserService userService;
-
     public JWTLoginFilter(String url, AuthenticationManager authManager) {
         super(new AntPathRequestMatcher(url));
         setAuthenticationManager(authManager);
@@ -35,7 +31,6 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException {
-        getService(request);
         LoginDTO credentials = new ObjectMapper().readValue(request.getInputStream(), LoginDTO.class);
         return getAuthenticationManager().authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -49,14 +44,20 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
                                             FilterChain filterChain, Authentication auth) throws IOException {
-        TokenAuthenticationService.addAuthentication(response, userService.findByEmail(auth.getName()));
+        getTokenAuthenticationService(request).addAuthentication(
+                response, getUserService(request).findByEmail(auth.getName())
+        );
     }
 
-    private void getService(ServletRequest request) {
-        if (userService == null) {
-            ServletContext servletContext = request.getServletContext();
-            WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
-            userService = webApplicationContext.getBean(UserService.class);
-        }
+    private UserService getUserService(ServletRequest request) {
+        ServletContext servletContext = request.getServletContext();
+        WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        return webApplicationContext.getBean(UserService.class);
+    }
+
+    private TokenAuthenticationService getTokenAuthenticationService(ServletRequest request) {
+        ServletContext servletContext = request.getServletContext();
+        WebApplicationContext webApplicationContext = WebApplicationContextUtils.getWebApplicationContext(servletContext);
+        return webApplicationContext.getBean(TokenAuthenticationService.class);
     }
 }

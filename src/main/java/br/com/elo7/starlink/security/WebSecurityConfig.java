@@ -18,12 +18,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetail userDetail;
+    @Autowired
+    private UserDetail userDetail;
 
     @Autowired
-    public WebSecurityConfig(UserDetail userDetail) {
-        this.userDetail = userDetail;
-    }
+    private JWTAuthenticationFilter authenticationFilter;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -35,8 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilterBefore(new JWTLoginFilter("/login", authenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(new JWTAuthenticationFilter(),
-                        UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf().disable()
                 .cors();
     }

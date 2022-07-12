@@ -9,12 +9,14 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 
+@Component
 public class TokenAuthenticationService {
 
     private static final long EXPIRATION_TIME = 28_800_000; // 8hs
@@ -22,7 +24,7 @@ public class TokenAuthenticationService {
     private static final String TOKEN_PREFIX = "Bearer";
     private static final String HEADER_STRING = "Authorization";
 
-    public static void addAuthentication(HttpServletResponse response, UserDTO user) throws IOException {
+    public void addAuthentication(HttpServletResponse response, UserDTO user) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         String JWT = Jwts.builder()
                 .setSubject(user.getEmail())
@@ -39,7 +41,7 @@ public class TokenAuthenticationService {
         response.getWriter().close();
     }
 
-    public static Authentication getAuthentication(HttpServletRequest request, UserService userService) {
+    public Authentication getAuthentication(HttpServletRequest request, UserService userService) {
         String token = request.getHeader(HEADER_STRING);
         if (token != null) {
             String payload = Jwts.parser()
@@ -56,7 +58,7 @@ public class TokenAuthenticationService {
         return null;
     }
 
-    private static UserAuthDTO buildToUserAuth(UserDTO user) {
+    private UserAuthDTO buildToUserAuth(UserDTO user) {
         UserAuthDTO auth = new UserAuthDTO();
         auth.setId(user.getId());
         auth.setEmail(user.getEmail());
@@ -65,7 +67,7 @@ public class TokenAuthenticationService {
         return auth;
     }
 
-    private static UserAuthDTO buildToUserResponse(String token, UserDTO user) {
+    private UserAuthDTO buildToUserResponse(String token, UserDTO user) {
         UserAuthDTO userResponse = new UserAuthDTO();
         userResponse.setId(user.getId());
         userResponse.setEmail(user.getEmail());
