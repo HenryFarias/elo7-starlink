@@ -4,28 +4,28 @@ import javax.validation.constraints.NotNull;
 
 public class AreaDTO {
 
-    @NotNull(message = "x is required")
-    private int x;
+    @NotNull(message = "X is required")
+    private Integer x;
 
-    @NotNull(message = "y is required")
-    private int y;
+    @NotNull(message = "Y is required")
+    private Integer y;
 
-    @NotNull(message = "planetId is required")
+    @NotNull(message = "Planet ID is required")
     private Long planetId;
 
-    public int getX() {
+    public Integer getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(Integer x) {
         this.x = x;
     }
 
-    public int getY() {
+    public Integer getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(Integer y) {
         this.y = y;
     }
 

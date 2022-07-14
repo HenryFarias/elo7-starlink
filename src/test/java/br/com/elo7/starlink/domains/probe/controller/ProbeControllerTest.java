@@ -1,6 +1,7 @@
 package br.com.elo7.starlink.domains.probe.controller;
 
 import br.com.elo7.starlink.domains.IntegrationTest;
+import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
 import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
 import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
 import br.com.elo7.starlink.domains.probe.service.ProbeService;
@@ -125,10 +126,10 @@ public class ProbeControllerTest extends IntegrationTest {
 
     @Test
     public void should_send_command_success() throws Exception {
-        var probeDTO = generator.nextObject(CommandDTO.class);
+        var command = generator.nextObject(CommandDTO.class);
         mockMvc.perform(post("/probe/1/command")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(gson.toJson(probeDTO)))
+                        .content(gson.toJson(command)))
                 .andExpect(status().isOk());
     }
 
@@ -148,10 +149,40 @@ public class ProbeControllerTest extends IntegrationTest {
                 .getContentAsString();
         var response = gson.fromJson(result, ErrorInfo.class);
 
-        System.out.println(result);
-
         assertTrue(response.getMessage().contains("direction=direction is required"));
         assertTrue(response.getMessage().contains("planetId=planetId is required"));
         assertTrue(response.getMessage().contains("commands=commands are required"));
+    }
+
+    @Test
+    public void should_send_to_planet_success() throws Exception {
+        var area = generator.nextObject(AreaDTO.class);
+        mockMvc.perform(post("/probe/1/send")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(area)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void should_send_to_planet_validation_error() throws Exception {
+        var request = generator.nextObject(AreaDTO.class);
+        request.setPlanetId(null);
+        request.setX(null);
+        request.setY(null);
+
+        var result = mockMvc.perform(post("/probe/1/send")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(request)))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        var response = gson.fromJson(result, ErrorInfo.class);
+
+        System.out.println(result);
+
+        assertTrue(response.getMessage().contains("x=X is required"));
+        assertTrue(response.getMessage().contains("planetId=Planet ID is required"));
+        assertTrue(response.getMessage().contains("y=Y is required"));
     }
 }
