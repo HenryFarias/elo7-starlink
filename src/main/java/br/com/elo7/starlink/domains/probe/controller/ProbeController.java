@@ -26,13 +26,13 @@ public class ProbeController implements ProbeControllerDocument {
 
     @PostMapping("/{id}/command")
     @ResponseStatus(HttpStatus.OK)
-    public void sendCommand(@PathVariable Long id, @RequestBody CommandDTO request) {
+    public void sendCommand(@PathVariable Long id, @RequestBody @Valid CommandDTO request) {
         service.sendCommand(id, request);
     }
 
     @PostMapping("/{id}/send")
     @ResponseStatus(HttpStatus.OK)
-    public void sendToPlanet(@PathVariable Long id, @RequestBody AreaDTO request) {
+    public void sendToPlanet(@PathVariable Long id, @RequestBody @Valid AreaDTO request) {
         service.sendToPlanet(id, request);
     }
 

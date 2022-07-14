@@ -1,6 +1,7 @@
 package br.com.elo7.starlink.domains.probe.controller;
 
 import br.com.elo7.starlink.domains.IntegrationTest;
+import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
 import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
 import br.com.elo7.starlink.domains.probe.service.ProbeService;
 import br.com.elo7.starlink.exception.ErrorInfo;
@@ -120,5 +121,37 @@ public class ProbeControllerTest extends IntegrationTest {
         assertEquals(expectedProbe.getDirection(), response.getDirection());
         assertEquals(expectedProbe.getX(), response.getX());
         assertEquals(expectedProbe.getY(), response.getY());
+    }
+
+    @Test
+    public void should_send_command_success() throws Exception {
+        var probeDTO = generator.nextObject(CommandDTO.class);
+        mockMvc.perform(post("/probe/1/command")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(probeDTO)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void should_send_command_validation_error() throws Exception {
+        var request = generator.nextObject(CommandDTO.class);
+        request.setCommands(null);
+        request.setDirection(null);
+        request.setPlanetId(null);
+
+        var result = mockMvc.perform(post("/probe/1/command")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(gson.toJson(request)))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        var response = gson.fromJson(result, ErrorInfo.class);
+
+        System.out.println(result);
+
+        assertTrue(response.getMessage().contains("direction=direction is required"));
+        assertTrue(response.getMessage().contains("planetId=planetId is required"));
+        assertTrue(response.getMessage().contains("commands=commands are required"));
     }
 }
