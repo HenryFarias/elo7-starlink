@@ -1,4 +1,4 @@
-package br.com.elo7.starlink.domains.mock;
+package br.com.elo7.starlink.mock;
 
 import javax.validation.ClockProvider;
 import javax.validation.ConstraintValidatorContext;

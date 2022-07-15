@@ -1,6 +1,6 @@
 package br.com.elo7.starlink.domains.user.validations;
 
-import br.com.elo7.starlink.domains.mock.ConstraintValidatorContextMock;
+import br.com.elo7.starlink.mock.ConstraintValidatorContextMock;
 import br.com.elo7.starlink.domains.user.service.UserService;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;

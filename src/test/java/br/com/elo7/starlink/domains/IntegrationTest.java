@@ -1,6 +1,6 @@
 package br.com.elo7.starlink.domains;
 
-import br.com.elo7.starlink.domains.mock.AuthenticationMock;
+import br.com.elo7.starlink.mock.AuthenticationMock;
 import br.com.elo7.starlink.security.service.TokenAuthenticationService;
 import com.google.gson.Gson;
 import org.jeasy.random.EasyRandom;
@@ -29,7 +29,7 @@ public abstract class IntegrationTest {
 
     protected MockMvc mockMvc;
 
-    protected Gson gson = new Gson();
+    protected final Gson gson = new Gson();
 
     @BeforeEach
     public void setup() {
