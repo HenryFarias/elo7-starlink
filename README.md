@@ -1,5 +1,5 @@
 # Starlink project
-![Coverage](https://img.shields.io/badge/coverage-100%25-green) ![Issues](https://img.shields.io/badge/issues-3-orange) ![Java](https://img.shields.io/badge/language-Java-lightgrey) ![Java](https://img.shields.io/badge/language-Java-lightgrey) 
+![Coverage](https://img.shields.io/badge/coverage-100%25-green) ![Issues](https://img.shields.io/badge/issues-3-orange) ![Java](https://img.shields.io/badge/language-Java-lightgrey) 
 
 This in an innovation project that send probes to planets!
 
