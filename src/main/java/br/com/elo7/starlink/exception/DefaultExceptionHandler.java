@@ -18,9 +18,11 @@ public class DefaultExceptionHandler {
 
     Logger log = LoggerFactory.getLogger(DefaultExceptionHandler.class);
 
+    public static final String REQUEST_ERROR_MESSAGE = "An error occurred while executing the request";
+
     @ExceptionHandler(value = ApplicationException.class)
     public ResponseEntity<ErrorInfo> applicationErrorHandler(ApplicationException e) {
-        String message = getMessage(e);
+        String message = e.getMessage();
         ErrorInfo errorInfo = new ErrorInfo(message);
         log.error(message, e);
         if (e.getStatus() != null) {
@@ -42,16 +44,8 @@ public class DefaultExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     public ResponseEntity<ErrorInfo> defaultErrorHandler(Exception e) {
-        String message = "Ocorreu um erro ao executar a requisição";
+        String message = REQUEST_ERROR_MESSAGE;
         log.error(message, e);
         return new ResponseEntity<>(new ErrorInfo(message), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    private String getMessage(Exception e) {
-        String message = e.getMessage();
-        if (message.isEmpty()) {
-            message = "Ocorreu um erro ao executar a requisição";
-        }
-        return message;
     }
 }
