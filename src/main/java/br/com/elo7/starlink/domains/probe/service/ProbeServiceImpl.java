@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,6 +54,7 @@ public class ProbeServiceImpl implements ProbeService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void sendCommand(Long probeId, CommandDTO commandDTO) {
         ProbeDTO probe = find(probeId);
         probe.setDirection(commandDTO.getDirection());
@@ -61,6 +63,7 @@ public class ProbeServiceImpl implements ProbeService {
         objectService.receiveObject(new ObjectDTO(probe, commandDTO.getPlanetId()));
     }
 
+    @Transactional
     public void sendToPlanet(Long probeId, AreaDTO area) {
         if (objectService.existsByObjectIdAndPlanetId(probeId.toString(), area.getPlanetId())) {
             throw new ApplicationException("Probe is already on this planet", HttpStatus.BAD_REQUEST);
