@@ -28,12 +28,6 @@ public class User {
         this.password = passwordEncoder.encode(this.password);
     }
 
-    @PreUpdate
-    protected void onUpdate() {
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        this.password = passwordEncoder.encode(this.password);
-    }
-
     public Long getId() {
         return id;
     }
