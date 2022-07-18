@@ -2,6 +2,7 @@ package br.com.elo7.starlink.domains.planet.dto;
 
 import br.com.elo7.starlink.exception.ApplicationException;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.springframework.http.HttpStatus;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -32,7 +33,7 @@ public class PlanetDTO {
                 y > this.getHeight() ||
                 y < 0;
         if (invalid) {
-            throw new ApplicationException("Object is off planet");
+            throw new ApplicationException("Object is off planet", HttpStatus.BAD_REQUEST);
         }
         return this;
     }
@@ -40,7 +41,7 @@ public class PlanetDTO {
     public PlanetDTO thereIsNoObjectAtCoordinates(int x, int y) {
         for (ObjectDTO object : this.getObjects()) {
             if (y == object.getY() && x == object.getX()) {
-                throw new ApplicationException("There is already an object in this area");
+                throw new ApplicationException("There is already an object in this area", HttpStatus.BAD_REQUEST);
             }
         }
         return this;

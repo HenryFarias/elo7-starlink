@@ -8,15 +8,10 @@ import br.com.elo7.starlink.domains.user.dto.UserDTO;
 import br.com.elo7.starlink.security.dto.LoginDTO;
 import br.com.elo7.starlink.security.dto.UserAuthDTO;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import org.jeasy.random.EasyRandom;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static br.com.elo7.starlink.domains.probe.enumeration.Direction.N;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -24,16 +19,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 public class MainFlow {
 
-    protected final long PLANET_ID = 1L;
-    protected final long PROBE_ID = 1L;
-
     private final MockMvc mockMvc;
     private final EasyRandom generator;
     private final Gson gson;
-
-    private UserDTO user;
-    private PlanetDTO planet;
-    private ProbeDTO probe;
     private String token;
 
     public MainFlow(MockMvc mockMvc, EasyRandom generator, Gson gson) {
@@ -42,8 +30,7 @@ public class MainFlow {
         this.gson = gson;
     }
 
-    public MainFlow createAUser() throws Exception {
-        user = generator.nextObject(UserDTO.class);
+    public MainFlow createAUser(UserDTO user) throws Exception {
         mockMvc.perform(post("/user")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(user)))
@@ -51,7 +38,7 @@ public class MainFlow {
         return this;
     }
 
-    public MainFlow doLoginWithThisUserAndSaveToken() throws Exception {
+    public MainFlow doLoginWithThisUserAndSaveToken(UserDTO user) throws Exception {
         var result = mockMvc.perform(post("/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(gson.toJson(new LoginDTO(user.getEmail(), user.getPassword()))))
@@ -65,28 +52,7 @@ public class MainFlow {
         return this;
     }
 
-    public MainFlow shouldFindAUserWithThisTokenAndExistsOneUser() throws Exception {
-        var result = mockMvc.perform(get("/user")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", token))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-        var listType = new TypeToken<ArrayList<UserDTO>>(){}.getType();
-        List<UserDTO> response = gson.fromJson(result, listType);
-
-        assertNotNull(response);
-        assertEquals(1, response.size());
-        return this;
-    }
-
-    public MainFlow thenCreateAPlanetWithThisSize(int planetWidth, int planetHeight) throws Exception {
-        planet = generator.nextObject(PlanetDTO.class);
-        planet.setId(PLANET_ID);
-        planet.setHeight(planetHeight);
-        planet.setWidth(planetWidth);
-
+    public MainFlow thenCreateAPlanet(PlanetDTO planet) throws Exception {
         mockMvc.perform(post("/planet")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", token)
@@ -95,8 +61,8 @@ public class MainFlow {
         return this;
     }
 
-    public MainFlow shouldFindThisPlanet() throws Exception {
-        var result = mockMvc.perform(get("/planet/" + PLANET_ID)
+    public MainFlow shouldFindThisPlanet(PlanetDTO planet) throws Exception {
+        var result = mockMvc.perform(get("/planet/" + planet.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", token))
                 .andExpect(status().isOk())
@@ -109,9 +75,7 @@ public class MainFlow {
         return this;
     }
 
-    public MainFlow thenCreateAProbe() throws Exception {
-        probe = generator.nextObject(ProbeDTO.class);
-        probe.setId(PROBE_ID);
+    public MainFlow thenCreateAProbe(ProbeDTO probe) throws Exception {
         mockMvc.perform(post("/probe")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", token)
@@ -120,12 +84,12 @@ public class MainFlow {
         return this;
     }
 
-    public MainFlow sendThisProbeToThisPlanetWithThisCoordinates(int initialX, int initialY) throws Exception {
+    public MainFlow sendThisProbeToThisPlanet(ProbeDTO probe, PlanetDTO planet) throws Exception {
         var area = generator.nextObject(AreaDTO.class);
         area.setPlanetId(planet.getId());
-        area.setX(initialX);
-        area.setY(initialY);
-        mockMvc.perform(post("/probe/" + PROBE_ID + "/send")
+        area.setX(probe.getX());
+        area.setY(probe.getY());
+        mockMvc.perform(post("/probe/" + probe.getId() + "/send")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", token)
                         .content(gson.toJson(area)))
@@ -133,7 +97,7 @@ public class MainFlow {
         return this;
     }
 
-    public MainFlow shouldFindThisPlanetWithOneObjectAndTheseCoordinates(int initialX, int initialY) throws Exception {
+    public MainFlow shouldFindThisPlanetWithOneObjectAndTheseCoordinates(PlanetDTO planet, ProbeDTO probe) throws Exception {
         var result = mockMvc.perform(get("/planet/" + planet.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", token))
@@ -143,26 +107,35 @@ public class MainFlow {
                 .getContentAsString();
         var response = gson.fromJson(result, PlanetDTO.class);
         assertEquals(probe.getId().toString(), response.getObjects().get(0).getObjectId());
-        assertEquals(initialX, response.getObjects().get(0).getX());
-        assertEquals(initialY, response.getObjects().get(0).getY());
+        assertEquals(probe.getX(), response.getObjects().get(0).getX());
+        assertEquals(probe.getY(), response.getObjects().get(0).getY());
         return this;
     }
 
-    public MainFlow sendACommandToThisProbe(String command) throws Exception {
-        var commandDTO = generator.nextObject(CommandDTO.class);
-        commandDTO.setCommands(command);
-        commandDTO.setPlanetId(planet.getId());
-        commandDTO.setDirection(N);
-        mockMvc.perform(post("/probe/" + probe.getId() +  "/command")
+    public MainFlow sendThisCommandToThisProbe(CommandDTO command, long probeId) throws Exception {
+        mockMvc.perform(post("/probe/" + probeId +  "/command")
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", token)
-                        .content(gson.toJson(commandDTO)))
+                        .content(gson.toJson(command)))
                 .andExpect(status().isOk());
         return this;
     }
 
-    public MainFlow thisProbeShouldBeWithTheseCoordinates(int expectedX, int expectedY) throws Exception {
-        var result = mockMvc.perform(get("/probe/" + probe.getId())
+    public MainFlow sendACommandToThisProbeAndReturnBadRequest(CommandDTO command, long probeId) throws Exception {
+        var result = mockMvc.perform(post("/probe/" + probeId +  "/command")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", token)
+                        .content(gson.toJson(command)))
+                .andExpect(status().isBadRequest())
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
+        assertTrue(result.contains("There is already an object in this area"));
+        return this;
+    }
+
+    public MainFlow thisProbeShouldBeWithTheseCoordinates(long probeId, int expectedX, int expectedY) throws Exception {
+        var result = mockMvc.perform(get("/probe/" + probeId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", token))
                 .andExpect(status().isOk())
@@ -175,8 +148,8 @@ public class MainFlow {
         return this;
     }
 
-    public void theObjectInThisPlanetShouldBeWithTheseCoordinates(int expectedX, int expectedY) throws Exception {
-        var result = mockMvc.perform(get("/planet/" + planet.getId())
+    public void theObjectInThisPlanetShouldBeWithTheseCoordinates(long planetId, int expectedX, int expectedY) throws Exception {
+        var result = mockMvc.perform(get("/planet/" + planetId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .header("Authorization", token))
                 .andExpect(status().isOk())

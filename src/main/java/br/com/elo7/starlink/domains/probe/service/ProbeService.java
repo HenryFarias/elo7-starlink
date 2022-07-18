@@ -11,6 +11,6 @@ public interface ProbeService {
     ProbeDTO find(Long id);
     void save(ProbeDTO planetDTO);
     void sendCommand(Long probeId, CommandDTO commandDTO);
-    void moveProbe(ProbeDTO probe, String commands);
+    void moveProbe(ProbeDTO probe, char command);
     void sendToPlanet(Long probeId, AreaDTO area);
 }

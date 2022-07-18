@@ -6,6 +6,7 @@ import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
 import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
 import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
 import br.com.elo7.starlink.domains.probe.entity.Probe;
+import br.com.elo7.starlink.domains.probe.enumeration.Command;
 import br.com.elo7.starlink.domains.probe.repository.ProbeRepository;
 import br.com.elo7.starlink.domains.probe.service.movements.Movement;
 import br.com.elo7.starlink.exception.ApplicationException;
@@ -55,15 +56,6 @@ public class ProbeServiceImpl implements ProbeService {
     }
 
     @Transactional
-    public void sendCommand(Long probeId, CommandDTO commandDTO) {
-        ProbeDTO probe = find(probeId);
-        probe.setDirection(commandDTO.getDirection());
-        moveProbe(probe, commandDTO.getCommands());
-        save(probe);
-        objectService.receiveObject(new ObjectDTO(probe, commandDTO.getPlanetId()));
-    }
-
-    @Transactional
     public void sendToPlanet(Long probeId, AreaDTO area) {
         if (objectService.existsByObjectIdAndPlanetId(probeId.toString(), area.getPlanetId())) {
             throw new ApplicationException("Probe is already on this planet", HttpStatus.BAD_REQUEST);
@@ -75,15 +67,29 @@ public class ProbeServiceImpl implements ProbeService {
         objectService.receiveObject(new ObjectDTO(probe, area.getPlanetId()));
     }
 
-    public void moveProbe(ProbeDTO probe, String commands) {
-        for (char command : commands.toCharArray()) {
-            probe = movements.stream()
-                    .filter(movement -> movement.findCommand().command == command)
-                    .findFirst()
-                    .orElseThrow(() -> new ApplicationException("Command not recognized", HttpStatus.BAD_REQUEST))
-                    .setProbe(probe)
-                    .moveTo()
-                    .getProbe();
+    @Transactional
+    public void sendCommand(Long probeId, CommandDTO commandDTO) {
+        ProbeDTO probe = find(probeId);
+        probe.setDirection(commandDTO.getDirection());
+        for (char command : commandDTO.getCommands().toCharArray()) {
+            moveProbe(probe, command);
+            save(probe);
+            if (isMoveForward(command)) {
+                objectService.receiveObject(new ObjectDTO(probe, commandDTO.getPlanetId()));
+            }
         }
+    }
+
+    private boolean isMoveForward(char command) {
+        return command == Command.M.command;
+    }
+
+    public void moveProbe(ProbeDTO probe, char command) {
+        movements.stream()
+            .filter(movement -> movement.findCommand().command == command)
+            .findFirst()
+            .orElseThrow(() -> new ApplicationException("Command not recognized", HttpStatus.BAD_REQUEST))
+            .setProbe(probe)
+            .moveTo();
     }
 }
