@@ -5,6 +5,7 @@ import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
 import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
 import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
 import br.com.elo7.starlink.domains.probe.entity.Probe;
+import br.com.elo7.starlink.domains.probe.enumeration.Command;
 import br.com.elo7.starlink.domains.probe.enumeration.Direction;
 import br.com.elo7.starlink.domains.probe.repository.ProbeRepository;
 import br.com.elo7.starlink.domains.probe.service.movements.Forward;
@@ -12,6 +13,7 @@ import br.com.elo7.starlink.domains.probe.service.movements.Left;
 import br.com.elo7.starlink.domains.probe.service.movements.Movement;
 import br.com.elo7.starlink.domains.probe.service.movements.Right;
 import br.com.elo7.starlink.exception.ApplicationException;
+import org.apache.commons.lang3.StringUtils;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -110,21 +112,24 @@ public class ProbeServiceTest {
 
 	@Test
 	public void should_send_command_success() {
-		Probe expectedProbe = generator.nextObject(Probe.class);
-		Long expectedProbeId = generator.nextLong();
-		Long expectedPlanetId = generator.nextLong();
+		var expectedProbe = generator.nextObject(Probe.class);
+		var probeId = generator.nextLong();
+		var expectedPlanetId = generator.nextLong();
+		var commands = "LMLMLMLMM";
+		int howManyMovesToForward = StringUtils.countMatches(commands, Command.M.command);
 
-		when(repository.findById(expectedProbeId))
+		when(repository.findById(probeId))
 				.thenReturn(Optional.of(expectedProbe));
 
 		CommandDTO command = generator.nextObject(CommandDTO.class);
-		command.setCommands("LMLMLMLMM");
+		command.setCommands(commands);
 
-		service.sendCommand(expectedProbeId, command);
+		service.sendCommand(probeId, command);
 
 		verify(repository, times(1)).findById(any());
-		verify(repository, times(1)).save(any());
-		verify(objectService).receiveObject(argThat(object -> {
+		verify(repository, times(commands.length())).save(any());
+		verify(objectService, times(howManyMovesToForward)).receiveObject(any());
+		verify(objectService, atLeastOnce()).receiveObject(argThat(object -> {
 			assertThat(object).isNotNull();
 			assertEquals(expectedPlanetId, object.getPlanetId());
 			assertNull(object.getId());
@@ -136,33 +141,60 @@ public class ProbeServiceTest {
 	}
 
 	@Test
-	public void should_move_probe_success() {
-		String commands = "LMLMLMLMM";
-		ProbeDTO probe = generator.nextObject(ProbeDTO.class);
-		probe.setY(2);
-		probe.setX(1);
-		probe.setDirection(Direction.N);
+	public void should_send_command_without_move_probe_success() {
+		var expectedProbe = generator.nextObject(Probe.class);
+		var probeId = generator.nextLong();
+		var commands = "LLLL";
+		int howManyMovesToForward = StringUtils.countMatches(commands, Command.M.command);
 
-		service.moveProbe(probe, commands);
+		when(repository.findById(probeId))
+				.thenReturn(Optional.of(expectedProbe));
 
-		assertEquals(Direction.N, probe.getDirection());
-		assertEquals(1, probe.getX());
-		assertEquals(3, probe.getY());
+		CommandDTO command = generator.nextObject(CommandDTO.class);
+		command.setCommands(commands);
+
+		service.sendCommand(probeId, command);
+
+		verify(repository, times(1)).findById(any());
+		verify(repository, times(commands.length())).save(any());
+		verify(objectService, times(howManyMovesToForward)).receiveObject(any());
 	}
 
 	@Test
-	public void should_move_probe_2_success() {
-		String commands = "MMRMMRMRRML";
+	public void should_move_probe_L_success() {
+		String command = "L";
+		ProbeDTO probe = generator.nextObject(ProbeDTO.class);
+		probe.setDirection(Direction.N);
+
+		service.moveProbe(probe, command.charAt(0));
+
+		assertEquals(Direction.W, probe.getDirection());
+	}
+
+	@Test
+	public void should_move_probe_R_success() {
+		String command = "R";
+		ProbeDTO probe = generator.nextObject(ProbeDTO.class);
+		probe.setDirection(Direction.N);
+
+		service.moveProbe(probe, command.charAt(0));
+
+		assertEquals(Direction.E, probe.getDirection());
+	}
+
+	@Test
+	public void should_move_probe_M_success() {
+		String command = "M";
 		ProbeDTO probe = generator.nextObject(ProbeDTO.class);
 		probe.setY(3);
 		probe.setX(3);
-		probe.setDirection(Direction.E);
+		probe.setDirection(Direction.N);
 
-		service.moveProbe(probe, commands);
+		service.moveProbe(probe, command.charAt(0));
 
 		assertEquals(Direction.N, probe.getDirection());
-		assertEquals(5, probe.getX());
-		assertEquals(1, probe.getY());
+		assertEquals(3, probe.getX());
+		assertEquals(4, probe.getY());
 	}
 
 	@Test
