@@ -1,12 +1,12 @@
 package br.com.elo7.starlink.e2e;
 
-import br.com.elo7.starlink.domains.planet.dto.PlanetDTO;
-import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
-import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
-import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
+import br.com.elo7.starlink.domains.planet.PlanetDTO;
+import br.com.elo7.starlink.domains.area.AreaDTO;
+import br.com.elo7.starlink.domains.command.CommandDTO;
+import br.com.elo7.starlink.domains.probe.ProbeDTO;
 import br.com.elo7.starlink.domains.user.dto.UserDTO;
-import br.com.elo7.starlink.security.dto.LoginDTO;
-import br.com.elo7.starlink.security.dto.UserAuthDTO;
+import br.com.elo7.starlink.infra.security.dto.LoginDTO;
+import br.com.elo7.starlink.infra.security.dto.UserAuthDTO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.jeasy.random.EasyRandom;
@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.ArrayList;
 import java.util.List;
 
-import static br.com.elo7.starlink.domains.probe.enumeration.Direction.N;
+import static br.com.elo7.starlink.domains.direction.Direction.N;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;

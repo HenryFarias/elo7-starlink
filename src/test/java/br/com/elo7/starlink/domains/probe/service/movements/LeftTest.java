@@ -1,13 +1,13 @@
 package br.com.elo7.starlink.domains.probe.service.movements;
 
-import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
-import br.com.elo7.starlink.domains.probe.enumeration.Command;
-import br.com.elo7.starlink.domains.probe.service.movements.Left;
+import br.com.elo7.starlink.domains.probe.ProbeDTO;
+import br.com.elo7.starlink.domains.command.Commands;
+import br.com.elo7.starlink.domains.command.Left;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 
-import static br.com.elo7.starlink.domains.probe.enumeration.Command.L;
-import static br.com.elo7.starlink.domains.probe.enumeration.Direction.*;
+import static br.com.elo7.starlink.domains.command.Commands.LEFT;
+import static br.com.elo7.starlink.domains.direction.Direction.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LeftTest {
@@ -60,7 +60,7 @@ public class LeftTest {
 
     @Test
     public void should_find_command_left_success() {
-        Command command = new Left().findCommand();
-        assertEquals(L, command);
+        Commands command = new Left().findCommand();
+        assertEquals(LEFT, command);
     }
 }

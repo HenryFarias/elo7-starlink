@@ -1,11 +1,13 @@
 package br.com.elo7.starlink.domains.planet.service;
 
-import br.com.elo7.starlink.domains.planet.dto.ObjectDTO;
-import br.com.elo7.starlink.domains.planet.dto.PlanetDTO;
-import br.com.elo7.starlink.domains.planet.entity.Object;
-import br.com.elo7.starlink.domains.planet.entity.Planet;
-import br.com.elo7.starlink.domains.planet.repository.ObjectRepository;
-import br.com.elo7.starlink.exception.ApplicationException;
+import br.com.elo7.starlink.domains.object.ObjectDTO;
+import br.com.elo7.starlink.domains.object.ObjectInterface;
+import br.com.elo7.starlink.domains.object.Object;
+import br.com.elo7.starlink.domains.planet.PlanetDTO;
+import br.com.elo7.starlink.domains.planet.PlanetInterface;
+import br.com.elo7.starlink.infra.entity.Planet;
+import br.com.elo7.starlink.domains.object.ObjectRepository;
+import br.com.elo7.starlink.infra.exception.ApplicationException;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -27,13 +29,13 @@ import static org.mockito.Mockito.when;
 public class ObjectServiceTest {
 
 	@InjectMocks
-	private ObjectService service = new ObjectServiceImpl();
+	private ObjectInterface service = new Object();
 
 	@Mock
 	private ObjectRepository repository;
 
 	@Mock
-	private PlanetService planetService;
+	private PlanetInterface planetService;
 
 	@Spy
 	private ModelMapper modelMapper;
@@ -44,7 +46,7 @@ public class ObjectServiceTest {
 	public void should_update_coordinates_success() {
 		var x = 1;
 		var y = 2;
-		var objectToUpdate = generator.nextObject(Object.class);
+		var objectToUpdate = generator.nextObject(br.com.elo7.starlink.infra.entity.Object.class);
 		objectToUpdate.setX(2);
 		objectToUpdate.setY(1);
 
@@ -85,7 +87,7 @@ public class ObjectServiceTest {
 	public void should_receive_object_that_exists_success() {
 		var objectDTO = generator.nextObject(ObjectDTO.class);
 		var planet = generator.nextObject(PlanetDTO.class);
-		var currentObject = generator.nextObject(Object.class);
+		var currentObject = generator.nextObject(br.com.elo7.starlink.infra.entity.Object.class);
 
 		objectDTO.setX(0);
 		objectDTO.setY(0);

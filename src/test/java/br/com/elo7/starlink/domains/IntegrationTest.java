@@ -1,7 +1,7 @@
 package br.com.elo7.starlink.domains;
 
 import br.com.elo7.starlink.mock.AuthenticationMock;
-import br.com.elo7.starlink.security.service.TokenAuthenticationService;
+import br.com.elo7.starlink.infra.security.service.TokenAuthenticationService;
 import com.google.gson.Gson;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;

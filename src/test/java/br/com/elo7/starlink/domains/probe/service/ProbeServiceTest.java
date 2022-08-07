@@ -1,17 +1,18 @@
 package br.com.elo7.starlink.domains.probe.service;
 
-import br.com.elo7.starlink.domains.planet.service.ObjectService;
-import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
-import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
-import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
-import br.com.elo7.starlink.domains.probe.entity.Probe;
-import br.com.elo7.starlink.domains.probe.enumeration.Direction;
-import br.com.elo7.starlink.domains.probe.repository.ProbeRepository;
-import br.com.elo7.starlink.domains.probe.service.movements.Forward;
-import br.com.elo7.starlink.domains.probe.service.movements.Left;
-import br.com.elo7.starlink.domains.probe.service.movements.Movement;
-import br.com.elo7.starlink.domains.probe.service.movements.Right;
-import br.com.elo7.starlink.exception.ApplicationException;
+import br.com.elo7.starlink.domains.object.ObjectInterface;
+import br.com.elo7.starlink.domains.probe.ProbeInterface;
+import br.com.elo7.starlink.domains.area.AreaDTO;
+import br.com.elo7.starlink.domains.command.CommandDTO;
+import br.com.elo7.starlink.domains.probe.ProbeDTO;
+import br.com.elo7.starlink.infra.entity.Probe;
+import br.com.elo7.starlink.domains.direction.Direction;
+import br.com.elo7.starlink.domains.probe.ProbeRepository;
+import br.com.elo7.starlink.domains.command.Forward;
+import br.com.elo7.starlink.domains.command.Left;
+import br.com.elo7.starlink.domains.command.Movement;
+import br.com.elo7.starlink.domains.command.Right;
+import br.com.elo7.starlink.infra.exception.ApplicationException;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,13 +38,13 @@ import static org.mockito.Mockito.*;
 @ExtendWith(MockitoExtension.class)
 public class ProbeServiceTest {
 
-	private ProbeService service;
+	private ProbeInterface service;
 
 	@Mock
 	private ProbeRepository repository;
 
 	@Mock
-	private ObjectService objectService;
+	private ObjectInterface objectInterface;
 
 	@Spy
 	private ModelMapper modelMapper;
@@ -53,7 +54,7 @@ public class ProbeServiceTest {
 	@BeforeEach
 	public void setup() {
 		List<Movement> movements = Arrays.asList(new Right(), new Left(), new Forward());
-		service = new ProbeServiceImpl(repository, modelMapper, movements, objectService);
+		service = new ProbeServiceImpl(repository, modelMapper, movements, objectInterface);
 	}
 	
 	@Test
@@ -124,7 +125,7 @@ public class ProbeServiceTest {
 
 		verify(repository, times(1)).findById(any());
 		verify(repository, times(1)).save(any());
-		verify(objectService).receiveObject(argThat(object -> {
+		verify(objectInterface).receiveObject(argThat(object -> {
 			assertThat(object).isNotNull();
 			assertEquals(expectedPlanetId, object.getPlanetId());
 			assertNull(object.getId());
@@ -189,7 +190,7 @@ public class ProbeServiceTest {
 			assertEquals(area.getY(), probe.getY());
 			return true;
 		}));
-		verify(objectService).receiveObject(argThat(object -> {
+		verify(objectInterface).receiveObject(argThat(object -> {
 			assertThat(object).isNotNull();
 			assertEquals(expectedPlanetId, object.getPlanetId());
 			assertNull(object.getId());
@@ -207,7 +208,7 @@ public class ProbeServiceTest {
 		var probeId = generator.nextLong();
 		var area = generator.nextObject(AreaDTO.class);
 
-		when(objectService.existsByObjectIdAndPlanetId(String.valueOf(probeId), area.getPlanetId()))
+		when(objectInterface.existsByObjectIdAndPlanetId(String.valueOf(probeId), area.getPlanetId()))
 				.thenReturn(true);
 
 		ApplicationException appException = assertThrows(ApplicationException.class, () ->

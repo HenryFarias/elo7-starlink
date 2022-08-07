@@ -1,11 +1,11 @@
 package br.com.elo7.starlink.domains.probe.controller;
 
 import br.com.elo7.starlink.domains.IntegrationTest;
-import br.com.elo7.starlink.domains.probe.dto.AreaDTO;
-import br.com.elo7.starlink.domains.probe.dto.CommandDTO;
-import br.com.elo7.starlink.domains.probe.dto.ProbeDTO;
-import br.com.elo7.starlink.domains.probe.service.ProbeService;
-import br.com.elo7.starlink.exception.ErrorInfo;
+import br.com.elo7.starlink.domains.area.AreaDTO;
+import br.com.elo7.starlink.domains.command.CommandDTO;
+import br.com.elo7.starlink.domains.probe.ProbeDTO;
+import br.com.elo7.starlink.domains.probe.ProbeInterface;
+import br.com.elo7.starlink.infra.exception.ErrorInfo;
 import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -25,7 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class ProbeControllerTest extends IntegrationTest {
 
     @MockBean
-    private ProbeService service;
+    private ProbeInterface service;
 
     @Test
     public void should_save_probe_success() throws Exception {

@@ -3,7 +3,7 @@ package br.com.elo7.starlink.domains.user.controller;
 import br.com.elo7.starlink.domains.IntegrationTest;
 import br.com.elo7.starlink.domains.user.dto.UserDTO;
 import br.com.elo7.starlink.domains.user.service.UserService;
-import br.com.elo7.starlink.exception.ErrorInfo;
+import br.com.elo7.starlink.infra.exception.ErrorInfo;
 import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;

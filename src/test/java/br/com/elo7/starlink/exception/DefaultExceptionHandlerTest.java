@@ -1,5 +1,8 @@
 package br.com.elo7.starlink.exception;
 
+import br.com.elo7.starlink.infra.exception.ApplicationException;
+import br.com.elo7.starlink.infra.exception.DefaultExceptionHandler;
+import br.com.elo7.starlink.infra.exception.ErrorInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 

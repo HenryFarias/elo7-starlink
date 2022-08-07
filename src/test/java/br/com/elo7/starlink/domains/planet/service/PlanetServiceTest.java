@@ -1,9 +1,10 @@
 package br.com.elo7.starlink.domains.planet.service;
 
-import br.com.elo7.starlink.exception.ApplicationException;
-import br.com.elo7.starlink.domains.planet.dto.PlanetDTO;
-import br.com.elo7.starlink.domains.planet.entity.Planet;
-import br.com.elo7.starlink.domains.planet.repository.PlanetRepository;
+import br.com.elo7.starlink.domains.planet.PlanetInterface;
+import br.com.elo7.starlink.domains.planet.Planet;
+import br.com.elo7.starlink.infra.exception.ApplicationException;
+import br.com.elo7.starlink.domains.planet.PlanetDTO;
+import br.com.elo7.starlink.domains.planet.PlanetRepository;
 import org.jeasy.random.EasyRandom;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +31,7 @@ import static org.mockito.Mockito.*;
 public class PlanetServiceTest {
 
 	@InjectMocks
-	private PlanetService service = new PlanetServiceImpl();
+	private PlanetInterface service = new Planet();
 
 	@Mock
 	private PlanetRepository repository;
@@ -48,7 +49,7 @@ public class PlanetServiceTest {
 
 	@Test
 	public void should_find_planet_success() {
-		Planet expectedPlanet = generator.nextObject(Planet.class);
+		br.com.elo7.starlink.infra.entity.Planet expectedPlanet = generator.nextObject(br.com.elo7.starlink.infra.entity.Planet.class);
 		Long planetId = generator.nextLong();
 		expectedPlanet.setId(planetId);
 
@@ -76,9 +77,9 @@ public class PlanetServiceTest {
 
 	@Test
 	public void should_find_all_planets_success() {
-		List<Planet> planetsExpected = Arrays.asList(
-				generator.nextObject(Planet.class),
-				generator.nextObject(Planet.class)
+		List<br.com.elo7.starlink.infra.entity.Planet> planetsExpected = Arrays.asList(
+				generator.nextObject(br.com.elo7.starlink.infra.entity.Planet.class),
+				generator.nextObject(br.com.elo7.starlink.infra.entity.Planet.class)
 		);
 		when(repository.findAll())
 				.thenReturn(planetsExpected);

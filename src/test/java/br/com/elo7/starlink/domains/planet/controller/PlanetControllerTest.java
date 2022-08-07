@@ -1,9 +1,9 @@
 package br.com.elo7.starlink.domains.planet.controller;
 
 import br.com.elo7.starlink.domains.IntegrationTest;
-import br.com.elo7.starlink.domains.planet.dto.PlanetDTO;
-import br.com.elo7.starlink.domains.planet.service.PlanetService;
-import br.com.elo7.starlink.exception.ErrorInfo;
+import br.com.elo7.starlink.domains.planet.PlanetDTO;
+import br.com.elo7.starlink.domains.planet.PlanetInterface;
+import br.com.elo7.starlink.infra.exception.ErrorInfo;
 import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PlanetControllerTest extends IntegrationTest {
 
     @MockBean
-    private PlanetService service;
+    private PlanetInterface service;
 
     @Test
     public void should_save_planet_success() throws Exception {
