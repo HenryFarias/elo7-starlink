@@ -1,82 +1,90 @@
-## Bem vindo candidato(a)!
+# Starlink project
+![Coverage](https://img.shields.io/badge/coverage-100%25-green) ![Issues](https://img.shields.io/badge/issues-3-orange) ![Java](https://img.shields.io/badge/language-Java-lightgrey) 
 
-Vamos explicar como funciona o nosso desafio:
+This in an innovation project that send probes to planets!
 
-Um desenvolvedor recebeu um tarefa de uma pessoa da equipe de produto. A pessoa de produto queria poder controlar sondas em outros planetas por meio de comandos. Para explicar o funcionamento do produto, o seguinte exemplo foi escrito em um pedaço de papel:
+- [initial challenge](docs/challenge.md)
 
-### Explicação da necessidade:
-```
-Tamanho da área do planeta : 5x5
+## Start application
 
-Posição de pouso da sonda 1: x=1, y=2 apontando para Norte
-Sequencia de comandos: LMLMLMLMM
-Posição final da sonda: x=1 y=3 apontando para Norte
+This application use profile to separate environments.
 
-Posição de pouso da sonda 2: x=3, y=3 apontando para Leste
-Sequencia de comandos: MMRMMRMRRML
-Posição final da sonda: x=5 y=1 apontando para Norte
-```
+### Develop
 
-### Detalhes sobre o funcionamento acima:
+#### Requirements
 
-A sequência de comandos é um conjunto de instruções enviadas da terra para a sonda, onde :
-- `M` -> Andar para a frente na direção que está 1 posição.
-- `L` -> Virar a sonda para a esquerda (90 graus)
-- `R` -> Virar a sonda para a direita (90 graus)
+- Maven
+- MySQL (At the root of this project there is a docker compose file with MySQL)
 
-A área do planeta é um plano cartesiano com o tamanho informado pelo operador.
+#### Running
 
-A orientação da sonda dentro do plano cartesiano usa uma rosa dos ventos como referência
+`mvn spring-boot:run -Dspring-boot.run.profiles=dev`
 
-![rosa dos ventos](http://i.imgur.com/li8Ae5L.png "Rosa dos Ventos")
+### Production
 
+#### Requirements
 
-## O desafio
+- Docker compose
 
-### Regra de negócios:
+#### Running
 
-- [ ] Primeiramente, **antes de olhar o código** pense quais comportamentos fazem sentido para dar suporte *a várias sondas pousando em um mesmo planeta com uma superfície limitada (podendo haver vários planetas)*. Considere que as sondas possuem combustível infinito e sempre estão disponíveis para receber ordens de movimento.
+At the root project
 
-Essa aplicação foi implementada por um desenvolvedor não muito experiente. O código está funcional e com certa cobertura de testes automatizados mas não necessariamente está seguindo boas práticas. Verifique a implementação sugerida nesse repositório e verifique se:
+`docker-compose up -d`
 
-- [ ] o código da aplicação dá suporte aos comportamentos pensados no primeiro item
-- [ ] a API da aplicação dá suporte aos comportamentos pensados no primeiro item
+### Running tests
 
-### Crie a sua melhoria sobre a solução proposta aqui:
+`mvn test`
 
-- [ ] Crie um repositório e faça o push dessa solução para seu novo repo
-- [ ] De preferência usando pequenos commits procure corrigir os problemas levantados acima. Para fins de código e divisão de responsabilidades em códigos Orientados a Objeto seguem dois links que exprimem alguns guidelines do Elo7: 
+## Features
 
-- https://www.alura.com.br/artigos/nao-aprender-oo-getters-e-setters
-- https://www.alura.com.br/artigos/o-que-e-modelo-anemico-e-por-que-fugir-dele
+### User
 
-Obs: fique à vontade para alterar todas as classes, pacotes etc. **Aproveite apenas o que achar que faz sentido!**
+- Create a user
+- List all users
 
-### Para pretensões senior APENAS:
+### Planet
 
-No caso da pretenção estar no patamar de senior nós requisitamos alguns desafios extras:
+- Create a planet
+- List all planets
+- Find a planet
 
-- [ ] O teste possui um mecanismo de persistência em memória, altere para uma persistência utilizando um ou mais banco de dados de forma a armazenar as informações de planetas e sondas e buscá-las ou alterá-las de maneira eficiente;
-- [ ] Se preocupe com uma maneira de documentar a api do sistema web;
-- [ ] Tenha em mente escalabilidade, disponibilidade e performance em sua solução. Apesar do problema proposto ser bem didático procure tratar a solução como um sistema de produção real.
+### Probe
 
-Obs: Se você está em dúvida se a sua pretenção é senior ou não procure nossa tech recruiter sobre o assunto, ela saberá responder. Caso sua pretenção seja junior ou pleno você pode encarar os pontos acima como opcionais para demonstrar seu conhecimento e potencializar o valor inicial de nossa oferta, mas se a sua pretenção é junior ou pleno os pontos acima NÃO SÃO OBRIGATÓRIOS para a entrega da solução.
+- Create a probe
+- List all probes
+- Find a probe
+- Send probe to planet
+- Send command to probe
 
-## Informações sobre o projeto
+## How to use
 
-### Como subir o projeto
+- Create a user
+- Do login with this user and capture a jwt token on response
+- Create a planet
+- Create a probe
+- Send probe to planet
+- Send commands to probe
 
-- Certifique-se que a porta 8080 esteja desocupada;
-- Certifique-se de que você possui o maven instalado localmente;
-- Certifique-se de que você está na raiz do projeto;
-- Rode o `./mvnw spring-boot:run`
+## Documentation
 
-Com isso as dependências serão baixadas e a API subirá na porta `8080`;
+The api documentation for this project can be found in the path below
 
-### Fazendo uma requisição
+http://localhost:8080/swagger-ui/index.html
 
-- Aqui você pode usar o Postman, por exemplo, ou o curl como abaixo:
+## Technologies
 
-```bash
-curl -X POST http://localhost:8080/planet-with-probes -H 'Content-Type: application/json' -d '{"width":10,"height":10,"probes":[{"x":1,"y":2,"direction":"N","commands": "LMLMLMLMM"},{"x":3,"y":3,"direction":"E","commands": "MMRMMRMRRM"}]}'
-```
+- Spring boot
+- Spring auth with JWT
+- Spring Data
+- Docker and docker-compose
+- Swagger
+- Spring boot test with junit and mockito
+
+### Roadmap
+
+The next features are listeds on issues of this project https://github.com/HenryFarias/elo7-starlink/issues
+
+# Contributing
+
+To contribute feel free to open an issue or a pull request on this GitHub =D
