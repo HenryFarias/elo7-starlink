@@ -3,7 +3,7 @@ package br.com.elo7.starlink.domains.user.service;
 import br.com.elo7.starlink.domains.user.dto.UserDTO;
 import br.com.elo7.starlink.domains.user.entity.User;
 import br.com.elo7.starlink.domains.user.repository.UserRepository;
-import br.com.elo7.starlink.exception.ApplicationException;
+import br.com.elo7.starlink.infra.exception.ApplicationException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
