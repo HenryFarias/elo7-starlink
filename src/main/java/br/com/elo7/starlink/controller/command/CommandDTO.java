@@ -1,4 +1,4 @@
-package br.com.elo7.starlink.controller.probe.dto;
+package br.com.elo7.starlink.controller.command;
 
 import javax.validation.constraints.NotNull;
 

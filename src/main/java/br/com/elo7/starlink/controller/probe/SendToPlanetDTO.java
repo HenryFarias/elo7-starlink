@@ -1,4 +1,4 @@
-package br.com.elo7.starlink.controller.probe.dto;
+package br.com.elo7.starlink.controller.probe;
 
 public class SendToPlanetDTO {
     private Integer x;

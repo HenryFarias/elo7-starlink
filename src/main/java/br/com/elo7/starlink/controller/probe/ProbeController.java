@@ -1,7 +1,5 @@
 package br.com.elo7.starlink.controller.probe;
 
-import br.com.elo7.starlink.controller.probe.dto.ProbeDTO;
-import br.com.elo7.starlink.controller.probe.dto.SendToPlanetDTO;
 import br.com.elo7.starlink.domains.Converter;
 import br.com.elo7.starlink.domains.area.Area;
 import br.com.elo7.starlink.domains.direction.Direction;
@@ -37,22 +35,6 @@ public class ProbeController {
         this.converter = converter;
         this.positionRepository = positionRepository;
     }
-
-//    @PostMapping("{probeId}/planets/{planetId}/command")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void sendCommand(@PathVariable Long planetId, @PathVariable Long probeId, @RequestBody @Valid CommandDTO request) throws Exception {
-//        var planet = planetRepository.findById(planetId);
-//        var probe = repository.findById(probeId);
-//        var oldArea = probe.getArea();
-//
-//        probe.calculateNewArea(request);
-//
-//        if (!planet.receiveObject(positionRepository, converter, probe.getArea(), oldArea, probe.getName())) {
-//            throw new ApplicationException("failed to send probe to planet");
-//        }
-//
-//        repository.save(probe);
-//    }
 
     @PostMapping("{probeId}/planets/{planetId}/send")
     @ResponseStatus(HttpStatus.OK)

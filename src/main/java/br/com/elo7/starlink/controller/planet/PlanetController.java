@@ -11,7 +11,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/planet")
+@RequestMapping(path = "/planets")
 public class PlanetController implements PlanetControllerDocument {
 
     private final PlanetRepository repository;

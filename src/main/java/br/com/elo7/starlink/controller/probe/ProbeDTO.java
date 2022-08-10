@@ -1,4 +1,4 @@
-package br.com.elo7.starlink.controller.probe.dto;
+package br.com.elo7.starlink.controller.probe;
 
 import br.com.elo7.starlink.domains.direction.Direction;
 import com.fasterxml.jackson.annotation.JsonProperty;

@@ -19,6 +19,10 @@ public class Area {
         }
     }
 
+    public Area generateNewArea() {
+        return new Area(toString());
+    }
+
     public void validCoordinatesAreOutOfPlanet(Planet planet) {
         var out = x > planet.getWidth() ||
                 x < 0 ||
